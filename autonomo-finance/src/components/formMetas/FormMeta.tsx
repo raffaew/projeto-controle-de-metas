@@ -59,6 +59,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
       mes:          form.mes,
       ano:          form.ano,
       criadoEm:     new Date(),
+      tipoTrabalho: tipo
     }
 
     onSubmit(nova)
@@ -81,7 +82,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
                 'flex flex-col items-center gap-1.5 p-3 rounded-xl border text-xs font-medium transition-all',
                 tipo === t
                   ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400'
-                  : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                  : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer'
               )}
             >
               <i className={`ti ti-${ICONES_TIPO[t]} text-[20px]`} aria-hidden />
@@ -166,7 +167,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
 
       <button
         type="submit"
-        className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-sm font-semibold transition-all flex items-center justify-center gap-2"
+        className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
       >
         <i className="ti ti-check text-[16px]" aria-hidden />
         Criar meta

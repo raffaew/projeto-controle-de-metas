@@ -9,7 +9,7 @@ import { calcularResumo, calcularLucro } from '@/lib/utils'
 
 export function useMeta() {
   const [meta, setMeta]             = useState<Meta | null>(null)
-  const [lancamentos, setLancamentos] = useState<Lancamento[]>([])
+  const [lancamentos, setlancamentos] = useState<Lancamento[]>([])
   const [loading, setLoading]       = useState(false)
   const [error, setError]           = useState<string | null>(null)
 
@@ -20,7 +20,7 @@ export function useMeta() {
 
   const definirMeta = useCallback((novaMeta: Meta) => {
     setMeta(novaMeta)
-    setLancamentos([])
+    setlancamentos([])
     setError(null)
   }, [])
 
@@ -43,11 +43,11 @@ export function useMeta() {
       data:        form.data ?? new Date(),
     }
 
-    setLancamentos(prev => [...prev, novo])
+    setlancamentos(prev => [...prev, novo])
   }, [meta, lancamentos.length])
 
   const removerLancamento = useCallback((id: string) => {
-    setLancamentos(prev =>
+    setlancamentos(prev =>
       prev
         .filter(l => l.id !== id)
         .map((l, i) => ({ ...l, diaNumero: i + 1 }))
@@ -56,7 +56,7 @@ export function useMeta() {
 
   const resetar = useCallback(() => {
     setMeta(null)
-    setLancamentos([])
+    setlancamentos([])
     setError(null)
   }, [])
 

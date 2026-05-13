@@ -1,16 +1,14 @@
-'use client'
-
 import type { Lancamento } from '@/types'
 import { formatBRL, LABELS_CATEGORIA } from '@/lib/utils'
 import { Badge } from '@/components/ui/Badge'
 
-interface ListaLancamentosProps {
+interface ListalancamentosProps {
   lancamentos: Lancamento[]
   metaDiaria: number
   onRemover?: (id: string) => void
 }
 
-export function ListaLancamentos({ lancamentos, metaDiaria, onRemover }: ListaLancamentosProps) {
+export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: ListalancamentosProps) {
   if (lancamentos.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-zinc-400">
@@ -76,7 +74,7 @@ export function ListaLancamentos({ lancamentos, metaDiaria, onRemover }: ListaLa
             {onRemover && (
               <button
                 onClick={() => onRemover(l.id)}
-                className="opacity-0 group-hover:opacity-100 text-zinc-300 hover:text-red-500 transition-all p-1 flex-shrink-0"
+                className="opacity-0 group-hover:opacity-100 text-zinc-300 hover:text-red-500 transition-all p-1 flex-shrink-0 cursor-pointer"
                 aria-label={`Remover dia ${l.diaNumero}`}
               >
                 <i className="ti ti-trash text-[14px]" aria-hidden />

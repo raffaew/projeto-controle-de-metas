@@ -1,4 +1,4 @@
-'use client'
+
 
 import { MetricCard } from '@/components/ui/MetricCard'
 import { ProgressBar } from '@/components/ui/ProgressBar'

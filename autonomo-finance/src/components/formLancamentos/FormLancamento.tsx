@@ -183,7 +183,7 @@ export function FormLancamento({
 
       <button
         type="submit"
-        className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-sm font-medium transition-all flex items-center justify-center gap-2"
+        className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer"
       >
         <i className="ti ti-plus text-[16px]" aria-hidden />
         Registrar dia {diasTrabalhados + 1} de {diasTotal}

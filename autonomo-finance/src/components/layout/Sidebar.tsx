@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/cn'
 
 const NAV = [
-  { href: '/dashboard',    icon: 'layout-dashboard', label: 'Dashboard'     },
-  { href: '/metas',        icon: 'target',            label: 'Metas'         },
+  { href: '/dashboard',    icon: 'layout-dashboard', label: 'dashboard'     },
+  { href: '/metas',        icon: 'target',            label: 'metas'         },
   { href: '/lancamentos',  icon: 'calendar-plus',     label: 'Lançamentos'   },
   { href: '/relatorios',   icon: 'chart-bar',         label: 'Relatórios'    },
 ]
