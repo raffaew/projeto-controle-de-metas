@@ -1,4 +1,4 @@
-# AutoFinance
+# AutonomoFinance
 
 Sistema de controle financeiro para trabalhadores autônomos — motoristas de aplicativo, entregadores, vendedores, freelancers e prestadores de serviço.
 
@@ -52,7 +52,3 @@ npm run dev
 ```
 
 Acesse [http://localhost:3000](http://localhost:3000).
-
-
-
-MIT
