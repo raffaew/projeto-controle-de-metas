@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(cuid())
+  nome         String
+  email        String       @unique
+  tipoTrabalho String       @default("outro")
+  metas        Meta[]
+  criadoEm     DateTime     @default(now()) @map("criado_em")
+
+  @@map("users")
+}
+
+model Meta {
+  id           String       @id @default(cuid())
+  userId       String       @map("user_id")
+  user         User         @relation(fields: [userId], references: [id])
+  tipoTrabalho String       @map("tipo_trabalho")
+  valorMeta    Float        @map("valor_meta")
+  diasTrabalho Int          @map("dias_trabalho")
+  mes          Int
+  ano          Int
+  lancamentos  Lancamento[]
+  criadoEm     DateTime     @default(now()) @map("criado_em")
+
+  @@map("metas")
+}
+
+model Lancamento {
+  id         String   @id @default(cuid())
+  metaId     String   @map("meta_id")
+  meta       Meta     @relation(fields: [metaId], references: [id])
+  diaNumero  Int      @map("dia_numero")
+  valorBruto Float    @map("valor_bruto")
+  gastos     Gasto[]
+  data       DateTime @default(now())
+
+  @@map("lancamentos")
+}
+
+model Gasto {
+  id           String     @id @default(cuid())
+  lancamentoId String     @map("lancamento_id")
+  lancamento   Lancamento @relation(fields: [lancamentoId], references: [id], onDelete: Cascade)
+  descricao    String
+  valor        Float
+  categoria    String
+
+  @@map("gastos")
+}
