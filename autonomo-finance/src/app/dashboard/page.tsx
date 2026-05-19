@@ -1,5 +1,5 @@
 "use client";
-
+import { useSession } from "next-auth/react";
 import { useMeta } from "@/hooks/useMeta";
 import { ResumoCards } from "@/components/resumoCards/ResumoCards";
 import { FormMeta } from "@/components/formMetas/FormMeta";
@@ -7,14 +7,15 @@ import { FormLancamento } from "@/components/formLancamentos/FormLancamento";
 import { Listalancamentos } from "@/components/formLancamentos/ListaLancamentos";
 import { Sidebar } from "@/components/siderBar/Sidebar";
 import { LABELS_TIPO, MESES } from "@/lib/utils";
-
 import { useNav } from "@/context/navContex";
-
 import { Lancamentos } from "@/components/lancamentos/Lancamentos";
 import { Metas } from "@/components/metas/Metas";
+import { createUser } from "@/services/userService";
+import { useEffect } from "react";
 
 export default function DashboardPage() {
   const { selected } = useNav();
+  const { data: session } = useSession();
 
   const {
     meta,
@@ -26,6 +27,25 @@ export default function DashboardPage() {
     resetar,
   } = useMeta();
 
+const syncUser = async () => {
+  if (!session?.user) return;
+
+  try {
+    await createUser({
+      nome: session.user.name as string,
+      email: session.user.email as string,
+      imagem: session.user.image as string,
+    });
+
+    console.log("Usuário sincronizado");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {
+  syncUser();
+}, [session]);
   // ── Sem meta configurada: mostrar formulário de setup ───────────────────────
   if (!meta) {
     return (
@@ -61,82 +81,80 @@ export default function DashboardPage() {
 
       {selected === "metas" && <Metas />}
       {selected === "lancamentos" && <Lancamentos />}
-      
+
       {selected === "dashboard" && (
         <div className="max-w-6xl mx-auto p-6 space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-xs text-zinc-400 uppercase tracking-widest mb-1">
-              {LABELS_TIPO[meta.tipoTrabalho]} · {MESES[meta.mes - 1]}
-              {meta.ano}
-            </p>
-            <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-              Dashboard
-            </h1>
-          </div>
-          <button
-            onClick={resetar}
-            className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 cursor-pointer"
-          >
-            <i className="ti ti-refresh text-[14px]" aria-hidden />
-            Nova meta
-          </button>
-        </div>
-
-        {/* Resumo + progresso */}
-        {resumo && <ResumoCards resumo={resumo} />}
-
-        {/* Grid: formulário + histórico */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          {/* Formulário de lançamento */}
-          <div className="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
-            <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-4 flex items-center gap-2">
-              <i
-                className="ti ti-calendar-plus text-[16px] text-emerald-500"
-                aria-hidden
-              />
-              Registrar hoje
-            </h2>
-            {meta && (
-              <FormLancamento
-                metaId={meta.id}
-                metaDiaria={meta.metaDiaria}
-                onSubmit={adicionarLancamento}
-                diasTrabalhados={lancamentos.length}
-                diasTotal={meta.diasTrabalho}
-              />
-            )}
+          {/* Header */}
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+                {LABELS_TIPO[meta.tipoTrabalho]} · {MESES[meta.mes - 1]}
+                {meta.ano}
+              </p>
+              <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+                Dashboard
+              </h1>
+            </div>
+            <button
+              onClick={resetar}
+              className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 cursor-pointer"
+            >
+              <i className="ti ti-refresh text-[14px]" aria-hidden />
+              Nova meta
+            </button>
           </div>
 
-          {/* Histórico de dias */}
-          <div className="lg:col-span-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-2">
+          {/* Resumo + progresso */}
+          {resumo && <ResumoCards resumo={resumo} />}
+
+          {/* Grid: formulário + histórico */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+            {/* Formulário de lançamento */}
+            <div className="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
+              <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-4 flex items-center gap-2">
                 <i
-                  className="ti ti-list text-[16px] text-zinc-400"
+                  className="ti ti-calendar-plus text-[16px] text-emerald-500"
                   aria-hidden
                 />
-                Histórico de dias
+                Registrar hoje
               </h2>
-              {lancamentos.length > 0 && (
-                <span className="text-xs text-zinc-400">
-                  {lancamentos.filter((l) => l.bateuMeta).length} de{" "}
-                  {lancamentos.length} acima da meta
-                </span>
+              {meta && (
+                <FormLancamento
+                  metaId={meta.id}
+                  metaDiaria={meta.metaDiaria}
+                  onSubmit={adicionarLancamento}
+                  diasTrabalhados={lancamentos.length}
+                  diasTotal={meta.diasTrabalho}
+                />
               )}
             </div>
-            <Listalancamentos
-              lancamentos={lancamentos}
-              metaDiaria={meta.metaDiaria}
-              onRemover={removerLancamento}
-            />
+
+            {/* Histórico de dias */}
+            <div className="lg:col-span-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-2">
+                  <i
+                    className="ti ti-list text-[16px] text-zinc-400"
+                    aria-hidden
+                  />
+                  Histórico de dias
+                </h2>
+                {lancamentos.length > 0 && (
+                  <span className="text-xs text-zinc-400">
+                    {lancamentos.filter((l) => l.bateuMeta).length} de{" "}
+                    {lancamentos.length} acima da meta
+                  </span>
+                )}
+              </div>
+              <Listalancamentos
+                lancamentos={lancamentos}
+                metaDiaria={meta.metaDiaria}
+                onRemover={removerLancamento}
+              />
+            </div>
           </div>
         </div>
-      </div>
       )}
-
-      
     </div>
   );
 }

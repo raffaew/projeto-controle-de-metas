@@ -20,11 +20,12 @@ export type NavPage = "dashboard" | "metas" | "lancamentos" | "relatorios";
 // ─── Entidades do banco ────────────────────────────────────────────────────────
 
 export interface User {
-  id: string;
+  id?: string;
   nome: string;
   email: string;
-  tipoTrabalho: TipoTrabalho;
-  criadoEm: Date;
+  imagem: string;
+  tipoTrabalho?: TipoTrabalho;
+  criadoEm?: Date;
 }
 
 export interface Meta {
