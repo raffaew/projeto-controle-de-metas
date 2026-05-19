@@ -27,28 +27,4 @@ A ideia é simples: você define uma meta de lucro mensal e quantos dias pretend
 
 ---
 
-## Como rodar localmente
 
-### Pré-requisitos
-
-- Node.js 18+
-- npm ou yarn
-
-### Instalação
-
-```bash
-# Clone o repositório
-git clone https://github.com/raffaew/projeto-controle-de-metas.git
-cd autonomo-finance
-
-# Instale as dependências
-npm install
-```
-
-### Rodar
-
-```bash
-npm run dev
-```
-
-Acesse [http://localhost:3000](http://localhost:3000).
