@@ -21,9 +21,23 @@ A ideia é simples: você define uma meta de lucro mensal e quantos dias pretend
 
 ## Stack
 
-- **Next.js 15** — App Router
-- **TypeScript** — tipagem completa em todo o projeto
-- **Tailwind CSS v4** — estilização
+### Frontend
+- **Next.js 15** — App Router para estrutura moderna de aplicações React
+- **TypeScript** — tipagem estática em todo o projeto
+- **Tailwind CSS v4** — estilização utilitária e responsiva
+
+---
+
+### Backend
+- **Node.js** — runtime JavaScript no servidor
+- **TypeScript** — tipagem estática no backend
+- **Express** — framework para criação da API REST
+- **Prisma ORM** — gerenciamento e acesso ao banco de dados
+
+---
+
+### Banco de Dados
+- **PostgreSQL (Supabase)** — banco relacional utilizado para persistência dos dados
 
 ---
 
