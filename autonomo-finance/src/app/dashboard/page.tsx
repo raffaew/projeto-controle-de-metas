@@ -10,7 +10,7 @@ import { LABELS_TIPO, MESES } from "@/lib/utils";
 import { useNav } from "@/context/navContex";
 import { Lancamentos } from "@/components/lancamentos/Lancamentos";
 import { Metas } from "@/components/metas/Metas";
-import { createUser } from "@/services/userService";
+
 import { useEffect } from "react";
 
 export default function DashboardPage() {
@@ -26,26 +26,6 @@ export default function DashboardPage() {
     removerLancamento,
     resetar,
   } = useMeta();
-
-const syncUser = async () => {
-  if (!session?.user) return;
-
-  try {
-    await createUser({
-      nome: session.user.name as string,
-      email: session.user.email as string,
-      imagem: session.user.image as string,
-    });
-
-    console.log("Usuário sincronizado");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-useEffect(() => {
-  syncUser();
-}, [session]);
   // ── Sem meta configurada: mostrar formulário de setup ───────────────────────
   if (!meta) {
     return (

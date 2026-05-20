@@ -1,9 +1,9 @@
 import { prisma } from "../lib/prisma";
-import { Prisma } from "@prisma/client";
+import { User } from "../types";
 import jwt from "jsonwebtoken";
 
 export class UserService {
-  async addUser(data: Prisma.UserCreateInput) {
+  async addUser(data: User) {
     const user = await prisma.user.upsert({
       where: {
         email: data.email,
@@ -36,26 +36,26 @@ export class UserService {
     return users;
   }
 
-  async createGoal(data: Prisma.MetaCreateInput) {
-    const goal = await prisma.meta.create({ data });
-    return goal;
-  }
+  // async createGoal(data: Prisma.MetaCreateInput) {
+  //   const goal = await prisma.meta.create({ data });
+  //   return goal;
+  // }
 
-  async getUserGoals(userId: string) {
-    const metas = await prisma.meta.findMany({
-      where: { userId },
-    });
-    return metas;
-  }
+  // async getUserGoals(userId: string) {
+  //   const metas = await prisma.meta.findMany({
+  //     where: { userId },
+  //   });
+  //   return metas;
+  // }
 
-  async getGoalById(metaId: string) {
-    const meta = await prisma.meta.findUnique({ where: { id: metaId } });
-    return meta;
-  }
+  // async getGoalById(metaId: string) {
+  //   const meta = await prisma.meta.findUnique({ where: { id: metaId } });
+  //   return meta;
+  // }
 
-  async deleteGoal(metaId: string) {
-    await prisma.meta.delete({ where: { id: metaId } });
-  }
+  // async deleteGoal(metaId: string) {
+  //   await prisma.meta.delete({ where: { id: metaId } });
+  // }
 
   // async addReleaseToGoal(metaId: string, data: Prisma.LancamentoCreateInput) {
   //   const lancamento = await prisma.lancamento.create({

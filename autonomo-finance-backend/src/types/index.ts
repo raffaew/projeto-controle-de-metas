@@ -19,6 +19,15 @@ export type CategoriaGasto =
 
 // ─── Tipos de entrada (o que chega no service via controller) ─────────────────
 
+export interface User {
+  id?: string;
+  nome: string;
+  email: string;
+  imagem?: string;
+  tipoTrabalho?: TipoTrabalho;
+  criadoEm?: Date;
+}
+
 export interface MetaForm {
   userId: string;
   tipoTrabalho: TipoTrabalho;

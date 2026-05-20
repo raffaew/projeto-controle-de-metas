@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { GoalService } from "../services/goalServices";
+import { JwtPayload } from "jsonwebtoken";
 
 const goalService = new GoalService();
 
@@ -15,8 +16,8 @@ export class GoalController {
 
   async getUserGoals(req: Request, res: Response) {
     try {
-      const { userId } = req.params;
-      const metas = await goalService.getUserGoals(userId as string);
+      const { userId } = req.user as JwtPayload;
+      const metas = await goalService.getUserGoals(userId);
       return res.status(200).json(metas);
     } catch (error) {
       return res.status(500).json({ error: "Erro ao buscar metas do usuário" });

@@ -12,18 +12,18 @@ const releasesController = new ReleasesController();
 
 router.post("/user", userController.addUser);
 
-router.get("/users", userController.getAllUsers);
+router.get("/users", authMiddleware, userController.getAllUsers);
 
-router.post("/meta", goalController.createGoal);
+router.get("/user/metas", authMiddleware, goalController.getUserGoals);
 
-router.get("/meta/:metaId", goalController.getGoalById);
+router.post("/meta", authMiddleware, goalController.createGoal);
 
-router.get("/user/:userId/metas", goalController.getUserGoals);
+router.get("/meta/:metaId", authMiddleware, goalController.getGoalById);
 
-router.delete("/meta/:metaId", goalController.deleteGoal);
+router.delete("/meta/:metaId", authMiddleware, goalController.deleteGoal);
 
-router.post("/meta/:metaId/lancamento", releasesController.addReleaseToGoal);
+router.post("/meta/:metaId/lancamento", authMiddleware, releasesController.addReleaseToGoal);
 
-router.delete("/lancamento/:lancamentoId", releasesController.deleteRelease);
+router.delete("/lancamento/:lancamentoId", authMiddleware, releasesController.deleteRelease);
 
 export default router;

@@ -1,6 +1,7 @@
 import { prisma } from "../lib/prisma";
 import type { MetaForm } from "../types"; // ← só esse import
 
+
 export class GoalService {
   async createGoal(data: MetaForm) {
     const metaDiaria = data.valorMeta / data.diasTrabalho;
@@ -12,7 +13,13 @@ export class GoalService {
 
   async getUserGoals(userId: string) {
     const metas = await prisma.meta.findMany({
-      where: { userId },
+      where: { userId }, include: {
+        lancamentos: {
+          include: {
+            gastos: true,
+          },
+        },
+      },
     });
     return metas;
   }
