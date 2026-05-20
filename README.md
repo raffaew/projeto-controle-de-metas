@@ -31,7 +31,8 @@ A ideia é simples: você define uma meta de lucro mensal e quantos dias pretend
 - **TypeScript** — tipagem estática no backend
 - **Express** — framework para criação da API REST
 - **Prisma ORM** — gerenciamento e acesso ao banco de dados
-
+- **JWT Authentication** — autenticação e autorização via tokens
+- **REST API**  
 ---
 
 ### Banco de Dados
