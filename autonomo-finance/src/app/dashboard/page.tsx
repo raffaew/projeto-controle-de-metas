@@ -17,6 +17,10 @@ export default function DashboardPage() {
   const { selected } = useNav();
   const { data: session } = useSession();
 
+  // console.log('session:', session)
+  // console.log('backendToken:', session?.backendToken)
+  // console.log('backendId:', session?.backendId)
+
   const {
     meta,
     resumo,
