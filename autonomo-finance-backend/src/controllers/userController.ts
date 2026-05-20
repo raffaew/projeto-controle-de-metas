@@ -5,8 +5,8 @@ const userService = new UserService();
 export class UserController {
   async addUser(req: Request, res: Response) {
     try {
-      const user = await userService.addUser(req.body);
-      return res.status(201).json(user);
+      const {user, token} = await userService.addUser(req.body);
+      return res.status(201).json({user, token});
     } catch (error) {
       return res.status(500).json({ error: "Erro ao adicionar usuário" });
     }
@@ -19,7 +19,6 @@ export class UserController {
       if (!users || users.length === 0) {
         return res.status(404).json({ error: "Nenhum usuário encontrado" });
       }
-      
       return res.status(200).json(users);
 
     } catch (error) {

@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma";
 import { Prisma } from "@prisma/client";
+import jwt from "jsonwebtoken";
 
 export class UserService {
   async addUser(data: Prisma.UserCreateInput) {
@@ -11,7 +12,11 @@ export class UserService {
       create: data,
     });
 
-    return user;
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
+      expiresIn: "3d",
+    });
+
+    return { user, token };
   }
 
   async getAllUsers() {

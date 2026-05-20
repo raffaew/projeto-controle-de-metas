@@ -1,29 +1,29 @@
-import { Router } from 'express'
-import { UserController } from '../controllers/userController'
-import { GoalController } from '../controllers/goalController'
-import { ReleasesController } from '../controllers/releasesController'
+import { Router } from "express";
+import { UserController } from "../controllers/userController";
+import { GoalController } from "../controllers/goalController";
+import { ReleasesController } from "../controllers/releasesController";
+import { authMiddleware } from "../middleware/authMiddleware";
 
+const router = Router();
 
-const router = Router()
+const userController = new UserController();
+const goalController = new GoalController();
+const releasesController = new ReleasesController();
 
-const userController = new UserController()
-const goalController = new GoalController()
-const releasesController = new ReleasesController()
-
-router.post('/user', userController.addUser);
+router.post("/user", userController.addUser);
 
 router.get("/users", userController.getAllUsers);
 
-router.post('/meta', goalController.createGoal);
+router.post("/meta", goalController.createGoal);
 
-router.get('/meta/:metaId', goalController.getGoalById);
+router.get("/meta/:metaId", goalController.getGoalById);
 
-router.get('/user/:userId/metas', goalController.getUserGoals);
+router.get("/user/:userId/metas", goalController.getUserGoals);
 
-router.delete('/meta/:metaId', goalController.deleteGoal);
+router.delete("/meta/:metaId", goalController.deleteGoal);
 
-router.post('/meta/:metaId/lancamento', releasesController.addReleaseToGoal);
+router.post("/meta/:metaId/lancamento", releasesController.addReleaseToGoal);
 
-router.delete('/lancamento/:lancamentoId', releasesController.deleteRelease);
+router.delete("/lancamento/:lancamentoId", releasesController.deleteRelease);
 
-export default router
+export default router;

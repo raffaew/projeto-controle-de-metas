@@ -9,7 +9,7 @@ export class ReleasesService {
     const meta = await prisma.meta.findUnique({ where: { id: metaId } });
     if (!meta) throw new Error("Meta não encontrada");
 
-    const bateuMeta = lucro >= meta.metaDiaria;
+    const bateuMeta = lucro >= meta.metaDiaria.toNumber();
 
     const lancamento = await prisma.lancamento.create({
       data: {
