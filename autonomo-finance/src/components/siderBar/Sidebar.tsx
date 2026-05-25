@@ -33,7 +33,7 @@ export function Sidebar() {
           return (
             <button
               key={item.label}
-              onClick={() => setSelected(item.id as NavPage)}
+              onClick={() =>  item.id === "metas" ? setSelected(item.id as NavPage) : null}
               className={cn(
                 'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer',
                 active
@@ -57,10 +57,10 @@ export function Sidebar() {
               <img
                 src={session.user.image}
                 alt={session.user.name ?? 'Usuário'}
-                className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 flex-shrink-0"
+                className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 shrink-0"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-xs font-semibold text-emerald-700 dark:text-emerald-300 flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-xs font-semibold text-emerald-700 dark:text-emerald-300 shrink-0">
                 {session.user.name?.[0] ?? 'U'}
               </div>
             )}
@@ -78,7 +78,7 @@ export function Sidebar() {
             {/* Botão logout */}
             <button
               onClick={() => signOut({ callbackUrl: '/login' })}
-              className="text-zinc-400 hover:text-red-500 transition-colors p-1 flex-shrink-0 cursor-pointer"
+              className="text-zinc-400 hover:text-red-500 transition-colors p-1 shrink-0 cursor-pointer"
               title="Sair"
               aria-label="Sair da conta"
             >

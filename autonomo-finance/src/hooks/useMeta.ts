@@ -1,74 +1,158 @@
+// src/hooks/useMeta.ts
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
-import type { Meta, Lancamento, LancamentoForm, ResumoMeta } from '@/types'
-import { calcularResumo, calcularLucro } from '@/lib/utils'
+import { useState, useCallback, useEffect } from 'react'
+import type { Meta, Lancamento, LancamentoForm, MetaCard } from '@/types'
+import { createGoal, createRelease, getUserGoals, deleteGoal, deleteRelease } from '@/lib/api'
+import { useSession } from 'next-auth/react'
 
-// Mock local enquanto o backend não está pronto
-// Substitua por fetch('/api/metas') depois
+export function useMeta(metasIniciais: MetaCard[] = []) {
+  // inicializa com dados do servidor — sem delay, sem flash
+  const [meta, setMeta]         = useState<MetaCard | null>(null)
+  const [metaCard, setMetaCard] = useState<MetaCard[]>(metasIniciais)
+  const [lancamentos, setLancamentos] = useState<Lancamento[]>([])
+  const [loading, setLoading]   = useState(false)
+  const [error, setError]       = useState<string | null>(null)
 
-export function useMeta() {
-  const [meta, setMeta]             = useState<Meta | null>(null)
-  const [lancamentos, setlancamentos] = useState<Lancamento[]>([])
-  const [loading, setLoading]       = useState(false)
-  const [error, setError]           = useState<string | null>(null)
+  const { data: session } = useSession()
 
-  const resumo: ResumoMeta | null = useMemo(() => {
-    if (!meta) return null
-    return calcularResumo(meta, lancamentos)
-  }, [meta, lancamentos])
+  // ── Buscar metas ──────────────────────────────────────────────────────────
 
-  const definirMeta = useCallback((novaMeta: Meta) => {
-    setMeta(novaMeta)
-    setlancamentos([])
-    setError(null)
-  }, [])
-
-  const adicionarLancamento = useCallback((form: LancamentoForm) => {
-    if (!meta) return
-
-    const totalGastos = form.gastos.reduce((s, g) => s + g.valor, 0)
-    const lucro       = calcularLucro(form.valorBruto, totalGastos)
-
-    const novo: Lancamento = {
-      id:          crypto.randomUUID(),
-      metaId:      meta.id,
-      userId:      'local',
-      diaNumero:   lancamentos.length + 1,
-      valorBruto:  form.valorBruto,
-      gastos:      form.gastos.map(g => ({ ...g, id: crypto.randomUUID(), lancamentoId: '' })),
-      totalGastos,
-      lucro,
-      bateuMeta:   lucro >= meta.metaDiaria,
-      data:        form.data ?? new Date(),
+  const getGoals = useCallback(async (token: string) => {
+    try {
+      setLoading(true)
+      const goals: MetaCard[] = await getUserGoals(token)
+      setMetaCard(goals)
+      return goals
+    } catch (error) {
+      console.error('erro ao buscar metas:', error)
+    } finally {
+      setLoading(false)
     }
-
-    setlancamentos(prev => [...prev, novo])
-  }, [meta, lancamentos.length])
-
-  const removerLancamento = useCallback((id: string) => {
-    setlancamentos(prev =>
-      prev
-        .filter(l => l.id !== id)
-        .map((l, i) => ({ ...l, diaNumero: i + 1 }))
-    )
   }, [])
+
+  // rebusca quando o token muda (primeira vez que a sessão carrega)
+  // mas só se não tiver dados iniciais do servidor
+  useEffect(() => {
+    if (session?.backendToken && metasIniciais.length === 0) {
+      getGoals(session.backendToken)
+    }
+  }, [session?.backendToken])
+
+  // ── Criar meta ────────────────────────────────────────────────────────────
+
+  const definirMeta = useCallback(async (novaMeta: Meta) => {
+    try {
+      setLoading(true)
+      const goal = await createGoal(novaMeta, session?.backendToken || '')
+      setMeta(goal)
+      setLancamentos([])
+
+      // atualiza a lista de cards
+      await getGoals(session?.backendToken!)
+    } catch (error) {
+      setError(error as string)
+      console.error('erro definirMeta:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [session?.backendToken, getGoals])
+
+  // ── Selecionar meta para o dashboard ─────────────────────────────────────
+
+  const selecionarMeta = useCallback((metaSelecionada: MetaCard) => {
+    setMeta(metaSelecionada)
+  }, []);
+
+  // ── Deletar meta ──────────────────────────────────────────────────────────
+
+  const deletarMeta = useCallback(async (metaId: string) => {
+    try {
+      setLoading(true)
+      await deleteGoal(metaId, session?.backendToken || '')
+      setMetaCard(prev => prev.filter(m => m.id !== metaId))
+
+      // se a meta ativa foi deletada, limpa o dashboard
+      if (meta?.id === metaId) {
+        setMeta(null)
+        setLancamentos([])
+      }
+    } catch (error) {
+      setError('Erro ao deletar meta')
+      console.error('erro deletarMeta:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [session?.backendToken, meta?.id])
+
+  // ── Adicionar lançamento ──────────────────────────────────────────────────
+
+  const adicionarLancamento = useCallback(async (form: LancamentoForm) => {
+    if (!meta) return
+    try {
+      setLoading(true)
+      const novo: Lancamento = {
+        valorBruto: form.valorBruto,
+        gastos: form.gastos.map(g => ({ ...g })),
+      }
+
+      const release = await createRelease(novo, meta.id, session?.backendToken!)
+      setLancamentos(prev => [...prev, release])
+
+      // rebusca para atualizar o resumo
+      const goalsAtualizados = await getGoals(session?.backendToken!)
+      if (goalsAtualizados) {
+        const metaAtualizada = goalsAtualizados.find(m => m.id === meta.id)
+        if (metaAtualizada) setMeta(metaAtualizada)
+      }
+    } catch (error) {
+      console.error('erro adicionarLancamento:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [meta, session?.backendToken, getGoals])
+
+  // ── Remover lançamento ────────────────────────────────────────────────────
+
+  const removerLancamento = useCallback(async (id: string) => {
+    try {
+      setLoading(true)
+      await deleteRelease(id, session?.backendToken || '')
+      setLancamentos(prev => prev.filter(l => l.id !== id))
+
+      // rebusca para atualizar o resumo
+      const goalsAtualizados = await getGoals(session?.backendToken!)
+      if (goalsAtualizados) {
+        const metaAtualizada = goalsAtualizados.find(m => m.id === meta?.id)
+        if (metaAtualizada) setMeta(metaAtualizada)
+      }
+    } catch (error) {
+      console.error('erro removerLancamento:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [meta?.id, session?.backendToken, getGoals])
+
+  // ── Resetar ───────────────────────────────────────────────────────────────
 
   const resetar = useCallback(() => {
     setMeta(null)
-    setlancamentos([])
+    setMetaCard([])
+    setLancamentos([])
     setError(null)
   }, [])
 
   return {
     meta,
     lancamentos,
-    resumo,
+    metaCard,
     loading,
     error,
     definirMeta,
     adicionarLancamento,
     removerLancamento,
     resetar,
+    selecionarMeta,
+    deletarMeta,
   }
 }

@@ -2,8 +2,10 @@ import type { Lancamento, Meta, ResumoMeta, CategoriaGasto, TipoTrabalho } from 
 
 // ─── Formatação ───────────────────────────────────────────────────────────────
 
-export function formatBRL(value: number): string {
-  return value.toLocaleString('pt-BR', {
+export function formatBRL(value: number | string): string {
+  const num = Number(value)
+  if (isNaN(num)) return 'R$ 0,00'
+  return num.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
     minimumFractionDigits: 2,
@@ -25,34 +27,34 @@ export function calcularLucro(bruto: number, totalGastos: number): number {
   return bruto - totalGastos
 }
 
-export function calcularResumo(meta: Meta, lancamentos: Lancamento[]): ResumoMeta {
-  const lucroAcumulado = lancamentos.reduce((s, l) => s + l.lucro, 0)
-  const totalGastos    = lancamentos.reduce((s, l) => s + l.totalGastos, 0)
-  const totalBruto     = lancamentos.reduce((s, l) => s + l.valorBruto, 0)
+// export function calcularResumo(meta: Meta, lancamentos: Lancamento[]): ResumoMeta {
+//   const lucroAcumulado = lancamentos.reduce((s, l) => s + l.lucro, 0)
+//   const totalGastos    = lancamentos.reduce((s, l) => s + l.totalGastos, 0)
+//   const totalBruto     = lancamentos.reduce((s, l) => s + l.valorBruto, 0)
 
-  const faltaParaMeta        = Math.max(0, meta.valorMeta - lucroAcumulado)
-  const diasTrabalhados      = lancamentos.length
-  const diasRestantes        = Math.max(0, meta.diasTrabalho - diasTrabalhados)
-  const percentualConcluido  = Math.min(100, (lucroAcumulado / meta.valorMeta) * 100)
-  const mediaLucroDia        = diasTrabalhados > 0 ? lucroAcumulado / diasTrabalhados : 0
-  const metaDiariaAtualizada = diasRestantes > 0 ? faltaParaMeta / diasRestantes : 0
-  const projecaoFinal        = mediaLucroDia * meta.diasTrabalho
+//   const faltaParaMeta        = Math.max(0, meta.valorMeta - lucroAcumulado)
+//   const diasTrabalhados      = lancamentos.length
+//   const diasRestantes        = Math.max(0, meta.diasTrabalho - diasTrabalhados)
+//   const percentualConcluido  = Math.min(100, (lucroAcumulado / meta.valorMeta) * 100)
+//   const mediaLucroDia        = diasTrabalhados > 0 ? lucroAcumulado / diasTrabalhados : 0
+//   const metaDiariaAtualizada = diasRestantes > 0 ? faltaParaMeta / diasRestantes : 0
+//   const projecaoFinal        = mediaLucroDia * meta.diasTrabalho
 
-  return {
-    meta,
-    lucroAcumulado,
-    totalGastos,
-    totalBruto,
-    faltaParaMeta,
-    diasTrabalhados,
-    diasRestantes,
-    percentualConcluido,
-    mediaLucroDia,
-    metaDiariaAtualizada,
-    projecaoFinal,
-    lancamentos,
-  }
-}
+//   return {
+//     meta,
+//     lucroAcumulado,
+//     totalGastos,
+//     totalBruto,
+//     faltaParaMeta,
+//     diasTrabalhados,
+//     diasRestantes,
+//     percentualConcluido,
+//     mediaLucroDia,
+//     metaDiariaAtualizada,
+//     projecaoFinal,
+//     lancamentos,
+//   }
+// }
 
 // ─── Labels legíveis ──────────────────────────────────────────────────────────
 

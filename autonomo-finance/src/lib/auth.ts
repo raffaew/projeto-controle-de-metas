@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
 
         // guarda para os próximos callbacks
         user.backendToken = data.token
-        user.backendId    = data.user.id
+        user.userId    = data.user.id
 
         return true
       } catch (e) {
@@ -35,14 +35,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.backendToken = user.backendToken
-        token.backendId    = user.backendId
+        // token.backendId    = user.backendId
       }
       return token
     },
 
     async session({ session, token }) {
       session.backendToken = token.backendToken as string
-      session.backendId    = token.backendId    as string
+      //session.backendId    = token.backendId    as string
       return session
     },
   },

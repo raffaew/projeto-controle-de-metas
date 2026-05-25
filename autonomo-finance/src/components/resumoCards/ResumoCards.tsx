@@ -1,5 +1,4 @@
 
-
 import { MetricCard } from '@/components/ui/MetricCard'
 import { ProgressBar } from '@/components/ui/ProgressBar'
 import type { ResumoMeta } from '@/types'
@@ -18,7 +17,7 @@ export function ResumoCards({ resumo }: ResumoCardsProps) {
     percentualConcluido,
     metaDiariaAtualizada,
     projecaoFinal,
-    meta,
+    totalBruto,
   } = resumo
 
   const status = statusMeta(percentualConcluido)
@@ -30,7 +29,7 @@ export function ResumoCards({ resumo }: ResumoCardsProps) {
         <MetricCard
           label="Lucro acumulado"
           value={formatBRL(lucroAcumulado)}
-          sub={`de ${formatBRL(meta.valorMeta)}`}
+          sub={`de ${formatBRL(totalBruto)}`}
           variant="success"
           icon="trending-up"
         />
@@ -43,7 +42,7 @@ export function ResumoCards({ resumo }: ResumoCardsProps) {
         <MetricCard
           label="Dias trabalhados"
           value={String(diasTrabalhados)}
-          sub={`de ${meta.diasTrabalho} dias`}
+          sub={`de ${diasRestantes} dias`}
           icon="calendar-check"
         />
         <MetricCard
@@ -86,7 +85,7 @@ export function ResumoCards({ resumo }: ResumoCardsProps) {
           <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/50 p-3">
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-0.5">Projeção no ritmo atual</p>
             <p className={`text-base font-semibold ${
-              projecaoFinal >= meta.valorMeta
+              projecaoFinal >= totalBruto
                 ? 'text-emerald-600 dark:text-emerald-400'
                 : 'text-amber-600 dark:text-amber-400'
             }`}>

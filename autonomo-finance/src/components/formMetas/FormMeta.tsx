@@ -4,6 +4,8 @@ import { useState } from 'react'
 import type { MetaForm, TipoTrabalho, Meta } from '@/types'
 import { LABELS_TIPO, calcularMetaDiaria, formatBRL, MESES } from '@/lib/utils'
 import { cn } from '@/lib/cn'
+import { useNav } from '@/context/navContex'
+
 
 const TIPOS: TipoTrabalho[] = [
   'motorista', 'entregador', 'vendedor', 'freelancer', 'prestador', 'outro',
@@ -32,6 +34,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
     ano:          hoje.getFullYear(),
   })
   const [erro, setErro] = useState('')
+   const { setSelected } = useNav()
 
   const metaDiaria = form.valorMeta > 0 && form.diasTrabalho > 0
     ? calcularMetaDiaria(form.valorMeta, form.diasTrabalho)
@@ -51,8 +54,8 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
     }
 
     const nova: Meta = {
-      id:           crypto.randomUUID(),
-      userId:       'local',
+      //id:           crypto.randomUUID(),
+      //userId:       session?.userId!,
       valorMeta:    form.valorMeta,
       diasTrabalho: form.diasTrabalho,
       metaDiaria,
@@ -63,6 +66,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
     }
 
     onSubmit(nova)
+    setSelected("metas")
   }
 
   return (

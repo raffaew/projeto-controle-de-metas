@@ -11,7 +11,7 @@ interface NavContextProps {
 const NavContext = createContext<NavContextProps | null>(null)
 
 export function NavProvider({ children }: { children: React.ReactNode }) {
-  const [selected, setSelected] = useState<NavPage>('dashboard')
+  const [selected, setSelected] = useState<NavPage>('metas')
 
   return (
     <NavContext.Provider value={{ selected, setSelected }}>

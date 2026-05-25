@@ -7,9 +7,11 @@ const goalService = new GoalService();
 export class GoalController {
   async createGoal(req: Request, res: Response) {
     try {
-      const goal = await goalService.createGoal(req.body);
+      const { userId } = req.user as JwtPayload;
+      const goal = await goalService.createGoal({...req.body, userId});
       return res.status(201).json(goal);
     } catch (error) {
+       console.error('erro createGoal:', error);
       return res.status(500).json({ error: "Erro ao criar meta" });
     }
   }
@@ -20,6 +22,7 @@ export class GoalController {
       const metas = await goalService.getUserGoals(userId);
       return res.status(200).json(metas);
     } catch (error) {
+      console.error('erro createGoal:', error)
       return res.status(500).json({ error: "Erro ao buscar metas do usuário" });
     }
   }
@@ -43,7 +46,7 @@ export class GoalController {
       await goalService.deleteGoal(metaId as string);
       return res.status(200).json({ message: "Meta excluída com sucesso" });
     } catch (error) {
-      return res.status(500).json({ error: "Erro ao excluir meta" });
+      return res.status(500).json();
     }
   }
 }

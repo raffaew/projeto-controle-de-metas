@@ -15,22 +15,22 @@ function getColor(v: number) {
 }
 
 export function ProgressBar({ value, label, showPercent = true, className }: ProgressBarProps) {
-  const clamped = Math.min(100, Math.max(0, value))
+  //const clamped = Math.min(100, Math.max(0, value))
 
   return (
     <div className={cn('w-full', className)}>
       {(label || showPercent) && (
         <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400 mb-1.5">
           {label && <span>{label}</span>}
-          {showPercent && <span className="font-medium">{Math.round(clamped)}%</span>}
+          {showPercent && <span className="font-medium">{Math.round(value)}%</span>}
         </div>
       )}
       <div className="w-full h-2 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
         <div
-          className={cn('h-full rounded-full transition-all duration-500', getColor(clamped))}
-          style={{ width: `${clamped}%` }}
+          className={cn('h-full rounded-full transition-all duration-500', getColor(value))}
+          style={{ width: `${value}%` }}
           role="progressbar"
-          aria-valuenow={clamped}
+          aria-valuenow={value}
           aria-valuemin={0}
           aria-valuemax={100}
         />

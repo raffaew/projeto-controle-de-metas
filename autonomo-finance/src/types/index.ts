@@ -29,10 +29,11 @@ export interface User {
 }
 
 export interface Meta {
-  id: string;
-  userId: string;
+  id?: string;
+  userId?: string;
   tipoTrabalho: TipoTrabalho;
   valorMeta: number;
+  lancamento?: Lancamento[],
   diasTrabalho: number;
   metaDiaria: number; // valorMeta / diasTrabalho
   mes: number; // 1–12
@@ -41,22 +42,22 @@ export interface Meta {
 }
 
 export interface Lancamento {
-  id: string;
-  metaId: string;
-  userId: string;
-  diaNumero: number; // 1, 2, 3... dentro do ciclo
+  id?: string;
+  //metaId: string;
+  //userId: string;
+  diaNumero?: number; // 1, 2, 3... dentro do ciclo
   valorBruto: number;
   gastos: Gasto[];
-  totalGastos: number; // soma calculada
-  lucro: number; // bruto - totalGastos
-  bateuMeta: boolean; // lucro >= meta.metaDiaria
-  data: Date;
+  totalGastos?: number; // soma calculada
+  lucro?: number; // bruto - totalGastos
+  bateuMeta?: boolean; // lucro >= meta.metaDiaria
+  data?: Date;
 }
 
 export interface Gasto {
-  id: string;
-  lancamentoId: string;
-  descricao: string;
+  id?: string;
+  //lancamentoId: string;
+  //descricao: string;
   valor: number;
   categoria: CategoriaGasto;
 }
@@ -71,14 +72,14 @@ export interface MetaForm {
 }
 
 export interface LancamentoForm {
-  metaId: string;
+  //metaId: string;
   valorBruto: number;
   gastos: GastoForm[];
   data?: Date;
 }
 
 export interface GastoForm {
-  descricao: string;
+  //descricao: string;
   valor: number;
   categoria: CategoriaGasto;
 }
@@ -86,7 +87,7 @@ export interface GastoForm {
 // ─── Tipos calculados para o dashboard (não persistidos) ──────────────────────
 
 export interface ResumoMeta {
-  meta: Meta;
+  id?: string;
   lucroAcumulado: number;
   totalGastos: number;
   totalBruto: number;
@@ -97,7 +98,6 @@ export interface ResumoMeta {
   mediaLucroDia: number; // média real até hoje
   metaDiariaAtualizada: number; // recalculada com dias restantes
   projecaoFinal: number; // se manter a média atual
-  lancamentos: Lancamento[];
 }
 
 export interface DiaHistorico {
@@ -133,4 +133,22 @@ export interface PaginatedResponse<T> {
   total: number;
   page: number;
   pageSize: number;
+}
+
+export interface MetaCard {
+  id:              string
+  tipoTrabalho:    TipoTrabalho
+  mes:             number
+  ano:             number
+  valorMeta:       number
+  metaDiaria:      number
+  lucroAcumulado:  number
+  diasTrabalhados: number
+  diasRestantes:    number
+  percentualConcluido: number
+  faltaParaMeta: number
+  metaDiariaAtualizada: number
+  lancamentos?: Lancamento[]
+  resumo: ResumoMeta
+  
 }

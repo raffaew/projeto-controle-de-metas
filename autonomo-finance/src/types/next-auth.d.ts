@@ -5,12 +5,12 @@ declare module "next-auth" {
 
   interface Session {
     backendToken: string;
-    backendId: string;
+    userId: string;
   }
 
   interface User {
     backendToken?: string;
-    backendId?: string;
+    userId?: string;
   }
 }
 
@@ -18,6 +18,6 @@ declare module "next-auth/jwt" {
 
   interface JWT {
     backendToken?: string;
-    backendId?: string;
+    userId?: string;
   }
 }

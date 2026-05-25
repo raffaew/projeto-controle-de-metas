@@ -26,7 +26,7 @@ export function FormLancamento({
 }: FormLancamentoProps) {
   const [bruto, setBruto]   = useState('')
   const [gastos, setGastos] = useState<GastoForm[]>([
-    { descricao: '', valor: 0, categoria: 'combustivel' },
+    {  valor: 0, categoria: 'combustivel' },
   ])
   const [erro, setErro] = useState('')
 
@@ -36,7 +36,7 @@ export function FormLancamento({
   const temBruto    = Number(bruto) > 0
 
   function addGasto() {
-    setGastos(prev => [...prev, { descricao: '', valor: 0, categoria: 'outros' }])
+    setGastos(prev => [...prev, {  valor: 0, categoria: 'outros' }])
   }
 
   function removeGasto(idx: number) {
@@ -62,10 +62,10 @@ export function FormLancamento({
     setErro('')
 
     const gastosValidos = gastos.filter(g => g.valor > 0)
-    onSubmit({ metaId, valorBruto: Number(bruto), gastos: gastosValidos })
+    onSubmit({ valorBruto: Number(bruto), gastos: gastosValidos })
 
     setBruto('')
-    setGastos([{ descricao: '', valor: 0, categoria: 'combustivel' }])
+    setGastos([{ valor: 0, categoria: 'combustivel' }])
   }
 
   return (

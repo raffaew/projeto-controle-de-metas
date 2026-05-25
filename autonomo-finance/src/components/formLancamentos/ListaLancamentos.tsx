@@ -22,7 +22,7 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
   return (
     <div className="space-y-2">
       {[...lancamentos].reverse().map(l => {
-        const superou = l.lucro > metaDiaria
+        const superou = (l.lucro ?? 0) > metaDiaria;
 
         return (
           <div
@@ -30,15 +30,15 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
             className="flex items-center gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 group"
           >
             {/* Dia */}
-            <div className="w-9 h-9 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">{l.diaNumero}</span>
+            <div className="w-9 h-9 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center shrink-0">
+              <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">{}</span>
             </div>
 
             {/* Detalhes */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                  {formatBRL(l.lucro)}
+                  {formatBRL(l.lucro ?? 0)}
                 </span>
                 <Badge variant={l.bateuMeta ? 'success' : superou ? 'success' : 'warning'}>
                   {l.bateuMeta ? (superou ? '↑ Acima' : '✓ Meta') : '↓ Abaixo'}
@@ -46,7 +46,7 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
               </div>
               <div className="flex items-center gap-3 text-xs text-zinc-400">
                 <span>Bruto: {formatBRL(l.valorBruto)}</span>
-                {l.totalGastos > 0 && (
+                {l.totalGastos && l.totalGastos > 0 && (
                   <span className="text-red-400">−{formatBRL(l.totalGastos)}</span>
                 )}
               </div>
@@ -66,15 +66,15 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
             </div>
 
             {/* Data */}
-            <div className="text-right text-xs text-zinc-400 flex-shrink-0 hidden sm:block">
-              {new Date(l.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
+            <div className="text-right text-xs text-zinc-400 shrink-0 hidden sm:block">
+              {l.data ? new Date(l.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : 'Data não disponível'}
             </div>
 
             {/* Remover */}
             {onRemover && (
               <button
-                onClick={() => onRemover(l.id)}
-                className="opacity-0 group-hover:opacity-100 text-zinc-300 hover:text-red-500 transition-all p-1 flex-shrink-0 cursor-pointer"
+                onClick={() => onRemover(l.id!)}
+                className="opacity-0 group-hover:opacity-100 text-zinc-300 hover:text-red-500 transition-all p-1 shrink-0 cursor-pointer"
                 aria-label={`Remover dia ${l.diaNumero}`}
               >
                 <i className="ti ti-trash text-[14px]" aria-hidden />

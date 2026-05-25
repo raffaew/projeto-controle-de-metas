@@ -10,9 +10,9 @@ model User {
   id       String   @id @default(cuid())
   nome     String
   email    String   @unique
+  criadoEm DateTime @default(now()) @map("criado_em")
   imagem   String?
   metas    Meta[]
-  criadoEm DateTime @default(now()) @map("criado_em")
 
   @@map("users")
 }
@@ -20,15 +20,15 @@ model User {
 model Meta {
   id           String       @id @default(cuid())
   userId       String       @map("user_id")
-  user         User         @relation(fields: [userId], references: [id])
   tipoTrabalho String       @map("tipo_trabalho")
   valorMeta    Decimal      @map("valor_meta") @db.Decimal(10, 2)
   diasTrabalho Int          @map("dias_trabalho")
   metaDiaria   Decimal      @map("meta_diaria") @db.Decimal(10, 2)
   mes          Int
   ano          Int
-  lancamentos  Lancamento[]
   criadoEm     DateTime     @default(now()) @map("criado_em")
+  lancamentos  Lancamento[]
+  user         User         @relation(fields: [userId], references: [id])
 
   @@map("metas")
 }
@@ -36,13 +36,13 @@ model Meta {
 model Lancamento {
   id          String   @id @default(cuid())
   metaId      String   @map("meta_id")
-  meta        Meta     @relation(fields: [metaId], references: [id])
   valorBruto  Decimal  @map("valor_bruto") @db.Decimal(10, 2)
   totalGastos Decimal  @map("total_gastos") @db.Decimal(10, 2)
   lucro       Decimal  @db.Decimal(10, 2)
   bateuMeta   Boolean  @map("bateu_meta")
-  gastos      Gasto[]
   data        DateTime @default(now())
+  gastos      Gasto[]
+  meta        Meta     @relation(fields: [metaId], references: [id], onDelete: Cascade)
 
   @@map("lancamentos")
 }
@@ -50,9 +50,9 @@ model Lancamento {
 model Gasto {
   id           String     @id @default(cuid())
   lancamentoId String     @map("lancamento_id")
-  lancamento   Lancamento @relation(fields: [lancamentoId], references: [id], onDelete: Cascade)
-  valor        Decimal  @db.Decimal(10, 2)
+  valor        Decimal    @db.Decimal(10, 2)
   categoria    String
+  lancamento   Lancamento @relation(fields: [lancamentoId], references: [id], onDelete: Cascade)
 
   @@map("gastos")
 }

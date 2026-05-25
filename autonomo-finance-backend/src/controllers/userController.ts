@@ -8,7 +8,13 @@ export class UserController {
       const {user, token} = await userService.addUser(req.body);
       return res.status(201).json({user, token});
     } catch (error) {
-      return res.status(500).json({ error: "Erro ao adicionar usuário" });
+      console.error(error);
+  
+      return res.status(500).json({
+    error: error instanceof Error
+      ? error.message
+      : "Erro interno"
+  })
     }
   }
 

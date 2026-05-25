@@ -4,6 +4,7 @@ import { GoalController } from "../controllers/goalController";
 import { ReleasesController } from "../controllers/releasesController";
 import { authMiddleware } from "../middleware/authMiddleware";
 
+
 const router = Router();
 
 const userController = new UserController();
