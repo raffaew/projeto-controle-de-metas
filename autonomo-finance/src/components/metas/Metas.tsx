@@ -143,7 +143,7 @@ export function Metas ({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
 
       {/* Header */}
       <div className="flex items-start justify-between">
@@ -156,12 +156,12 @@ export function Metas ({
           </h1>
         </div>
         <button
-          onClick={onNovaMeta}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-700 text-sm font-medium text-zinc-200 hover:bg-zinc-800 transition-colors"
-        >
-          <i className="ti ti-plus text-[16px]" aria-hidden />
-          Nova meta
-        </button>
+                onClick={onNovaMeta}
+                className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
+              >
+                <i className="ti ti-refresh text-[14px]" aria-hidden />
+                Nova meta
+              </button>
       </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

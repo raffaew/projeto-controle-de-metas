@@ -37,8 +37,11 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
   if (metaCard.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4">
+        
         <Sidebar />
+        
         <div className="w-full max-w-lg">
+          
           <div className="mb-8 text-center">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 mb-4">
               <i className="ti ti-target text-[24px] text-emerald-600 dark:text-emerald-400" aria-hidden />
@@ -60,7 +63,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
 
   // ── Dashboard completo ────────────────────────────────────────────────────
   return (
-    <div className="pl-60 min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="max-w-7xl mx-auto p-6 space-y-6  bg-zinc-50 dark:bg-zinc-950">
       <Sidebar />
 
       {selected === 'metas' && (
@@ -78,7 +81,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
 
       {selected === 'lancamentos' && <Lancamentos />}
 
-      {selected === 'dashboard' && !meta && (
+      {/* {selected === 'dashboard' && !meta && (
         // sem meta selecionada — mostra lista de metas
         <div className="max-w-6xl mx-auto p-6">
           <Metas
@@ -91,10 +94,10 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
             onNovaMeta={resetar}
           />
         </div>
-      )}
+      )} */}
 
       {selected === 'dashboard' && meta && (
-        <div className="max-w-6xl mx-auto p-6 space-y-6">
+        <div className="max-w-7xl mx-auto p-6 space-y-6">
 
           {/* Header */}
           <div className="flex items-start justify-between">
