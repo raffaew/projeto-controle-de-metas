@@ -63,7 +63,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
 
   // ── Dashboard completo ────────────────────────────────────────────────────
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6  bg-zinc-50 dark:bg-zinc-950">
+    <div className="max-w-7xl  mx-auto p-6 space-y-6  bg-zinc-50 dark:bg-zinc-950">
       <Sidebar />
 
       {selected === 'metas' && (
@@ -97,7 +97,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
       )} */}
 
       {selected === 'dashboard' && meta && (
-        <div className="max-w-7xl mx-auto p-6 space-y-6">
+        <div className="mx-auto p-6 space-y-6">
 
           {/* Header */}
           <div className="flex items-start justify-between">
