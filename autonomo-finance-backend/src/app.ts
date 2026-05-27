@@ -10,10 +10,19 @@ const app = express();
 app.use(morgan("tiny"));
 
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://autonomo-finance.vercel.app',
-  ],
+  origin: (origin, callback) => {
+    const allowed = [
+      'http://localhost:3000',
+      'https://projeto-controle-de-metas.vercel.app',
+    ]
+
+    // aceita qualquer preview URL da Vercel
+    if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
