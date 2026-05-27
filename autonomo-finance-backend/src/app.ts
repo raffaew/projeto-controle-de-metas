@@ -12,7 +12,7 @@ app.use(morgan("tiny"));
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    // 'https://seu-frontend.vercel.app', // ← adiciona quando fizer deploy do front
+    'https://autonomo-finance.vercel.app',
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

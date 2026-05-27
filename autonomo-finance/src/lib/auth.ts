@@ -14,11 +14,14 @@ export const authOptions: NextAuthOptions = {
     // 1 — dispara após o Google autenticar
     async signIn({ user }) {
       try {
+            console.log('Chamando backend:', process.env.NEXT_PUBLIC_API_URL)
         const data = await createToken({
           nome:   user.name!,
           email:  user.email!,
           imagem: user.image ?? undefined,
         })
+
+           console.log('Resposta do backend:', data)
 
         // guarda para os próximos callbacks
         user.backendToken = data.token
