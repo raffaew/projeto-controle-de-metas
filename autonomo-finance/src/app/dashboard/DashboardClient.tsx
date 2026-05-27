@@ -123,7 +123,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
 
                   {meta.resumo && <ResumoCards resumo={meta.resumo} />}
 
-                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 ">
                     <div className="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
                       <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-4 flex items-center gap-2">
                         <i

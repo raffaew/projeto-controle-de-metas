@@ -25,7 +25,7 @@ export function ResumoCards({ resumo }: ResumoCardsProps) {
   return (
     <div className="space-y-4">
       {/* Grid de métricas */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
         <MetricCard
           label="Lucro acumulado"
           value={formatBRL(lucroAcumulado)}
