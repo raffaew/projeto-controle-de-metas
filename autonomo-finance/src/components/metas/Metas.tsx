@@ -1,7 +1,7 @@
-import { Badge } from '@/components/ui/Badge'
-import { ProgressBar } from '@/components/ui/ProgressBar'
-import { formatBRL, MESES, LABELS_TIPO } from '@/lib/utils'
-import type { MetaCard } from '@/types'
+import { Badge } from "@/components/ui/Badge";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import { formatBRL, MESES, LABELS_TIPO } from "@/lib/utils";
+import type { MetaCard } from "@/types";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -18,23 +18,23 @@ import type { MetaCard } from '@/types'
 // }
 
 interface MetasViewProps {
-  metas:         MetaCard[]
-  loading:      boolean
-  onVerMeta:     (meta: MetaCard) => void
-  onDeletarMeta: (id: string) => void
-  onNovaMeta:    () => void
+  metas: MetaCard[];
+  loading: boolean;
+  onVerMeta: (meta: MetaCard) => void;
+  onDeletarMeta: (id: string) => void;
+  onNovaMeta: () => void;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function getStatus(pct: number): {
-  label: string
-  variant: 'success' | 'info' | 'warning' | 'danger'
+  label: string;
+  variant: "success" | "info" | "warning" | "danger";
 } {
-  if (pct >= 100) return { label: 'Concluída',    variant: 'success' }
-  if (pct >= 60)  return { label: 'Em andamento', variant: 'info'    }
-  if (pct >= 30)  return { label: 'Atenção',      variant: 'warning' }
-  return               { label: 'Em risco',      variant: 'danger'  }
+  if (pct >= 100) return { label: "Concluída", variant: "success" };
+  if (pct >= 60) return { label: "Em andamento", variant: "info" };
+  if (pct >= 30) return { label: "Atenção", variant: "warning" };
+  return { label: "Em risco", variant: "danger" };
 }
 
 // ─── Card individual ──────────────────────────────────────────────────────────
@@ -44,15 +44,13 @@ function MetaCardItem({
   onVer,
   onDeletar,
 }: {
-  meta:      MetaCard
-  onVer:     () => void
-  onDeletar: () => void
+  meta: MetaCard;
+  onVer: () => void;
+  onDeletar: () => void;
 }) {
-  
-   const status = getStatus(meta.resumo.percentualConcluido)
+  const status = getStatus(meta.resumo.percentualConcluido);
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4 hover:border-zinc-700 transition-colors">
-
       {/* Cabeçalho */}
       <div className="flex items-start justify-between">
         <div>
@@ -92,7 +90,10 @@ function MetaCardItem({
           <p className="text-xs text-zinc-500 mb-0.5">Dias trabalhados</p>
           <p className="text-sm font-medium text-zinc-100">
             {meta.resumo.diasTrabalhados}
-            <span className="text-zinc-500 font-normal"> de {meta.resumo.diasRestantes}</span>
+            <span className="text-zinc-500 font-normal">
+              {" "}
+              de {meta.resumo.diasRestantes}
+            </span>
           </p>
         </div>
         <div className="bg-zinc-800/60 rounded-xl p-3">
@@ -121,30 +122,28 @@ function MetaCardItem({
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 // ─── View principal ───────────────────────────────────────────────────────────
 
-export function Metas ({
+export function Metas({
   metas,
   loading = false,
   onVerMeta,
   onDeletarMeta,
   onNovaMeta,
 }: MetasViewProps) {
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="w-5 h-5 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
       </div>
-    )
+    );
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-
+    <>
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -156,25 +155,24 @@ export function Metas ({
           </h1>
         </div>
         <button
-                onClick={onNovaMeta}
-                className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
-              >
-                <i className="ti ti-refresh text-[14px]" aria-hidden />
-                Nova meta
-              </button>
+          onClick={onNovaMeta}
+          className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
+        >
+          <i className="ti ti-refresh text-[14px]" aria-hidden />
+          Nova meta
+        </button>
       </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {metas.map(meta => (
-            <MetaCardItem
-              key={meta.id}
-              meta={meta}
-              onVer={() => onVerMeta(meta)}
-              onDeletar={() => onDeletarMeta(meta.id)}
-            />
-          ))}
-        </div>
-     
-    </div>
-  )
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {metas.map((meta) => (
+          <MetaCardItem
+            key={meta.id}
+            meta={meta}
+            onVer={() => onVerMeta(meta)}
+            onDeletar={() => onDeletarMeta(meta.id)}
+          />
+        ))}
+      </div>
+    </>
+  );
 }

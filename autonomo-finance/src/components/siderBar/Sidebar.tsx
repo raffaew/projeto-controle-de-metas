@@ -29,12 +29,6 @@ export function Sidebar() {
           left-4
           z-50
           p-2
-          rounded-lg
-          bg-white
-          dark:bg-zinc-900
-          border
-          border-zinc-200
-          dark:border-zinc-800
         "
       >
         <i className="ti ti-menu-2 text-xl" />

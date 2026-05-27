@@ -63,113 +63,116 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
 
   // ── Dashboard completo ────────────────────────────────────────────────────
   return (
-    <div className="max-w-7xl  mx-auto p-6 space-y-6  bg-zinc-50 dark:bg-zinc-950">
-      <Sidebar />
+  <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <Sidebar />
 
-      {selected === 'metas' && (
-        <Metas
-          metas={metaCard}
-          loading={loading}
-          onVerMeta={(metaSelecionada) => {
-            selecionarMeta(metaSelecionada)
-            setSelected('dashboard')
-          }}
-          onDeletarMeta={deletarMeta}
-          onNovaMeta={resetar}
-        />
-      )}
+    <main className="md:ml-60 p-6">
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
 
-      {selected === 'lancamentos' && <Lancamentos />}
-
-      {/* {selected === 'dashboard' && !meta && (
-        // sem meta selecionada — mostra lista de metas
-        <div className="max-w-6xl mx-auto p-6">
+        {selected === 'metas' && (
           <Metas
             metas={metaCard}
             loading={loading}
             onVerMeta={(metaSelecionada) => {
               selecionarMeta(metaSelecionada)
+              setSelected('dashboard')
             }}
             onDeletarMeta={deletarMeta}
             onNovaMeta={resetar}
           />
-        </div>
-      )} */}
+        )}
 
-      {selected === 'dashboard' && meta && (
-        <div className="mx-auto p-6 space-y-6">
+        {selected === 'lancamentos' && <Lancamentos />}
 
-          {/* Header */}
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs text-zinc-400 uppercase tracking-widest mb-1">
-                {LABELS_TIPO[meta.tipoTrabalho]} · {MESES[meta.mes - 1]} {meta.ano}
-              </p>
-              <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-                Dashboard
-              </h1>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setSelected('metas')}
-                className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
-              >
-                <i className="ti ti-arrow-left text-[14px]" aria-hidden />
-                Metas
-              </button>
-              <button
-                onClick={resetar}
-                className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
-              >
-                <i className="ti ti-refresh text-[14px]" aria-hidden />
-                Nova meta
-              </button>
-            </div>
-          </div>
+        {selected === 'dashboard' && meta && (
+          <>
+            {/* Header */}
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+                  {LABELS_TIPO[meta.tipoTrabalho]} · {MESES[meta.mes - 1]} {meta.ano}
+                </p>
 
-          {/* Resumo + progresso */}
-          {meta.resumo && <ResumoCards resumo={meta.resumo} />}
-
-          {/* Grid: formulário + histórico */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-
-            {/* Formulário de lançamento */}
-            <div className="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
-              <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-4 flex items-center gap-2">
-                <i className="ti ti-calendar-plus text-[16px] text-emerald-500" aria-hidden />
-                Registrar hoje
-              </h2>
-              <FormLancamento
-                metaId={meta.id}
-                metaDiaria={meta.metaDiaria}
-                onSubmit={adicionarLancamento}
-                diasTrabalhados={lancamentos.length}
-                diasTotal={meta.diasRestantes ?? meta.diasTrabalhados}
-              />
-            </div>
-
-            {/* Histórico de dias */}
-            <div className="lg:col-span-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-2">
-                  <i className="ti ti-list text-[16px] text-zinc-400" aria-hidden />
-                  Histórico de dias
-                </h2>
-                {lancamentos.length > 0 && (
-                  <span className="text-xs text-zinc-400">
-                    {lancamentos.filter(l => l.bateuMeta).length} de {lancamentos.length} acima da meta
-                  </span>
-                )}
+                <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+                  Dashboard
+                </h1>
               </div>
-              <Listalancamentos
-                lancamentos={lancamentos}
-                metaDiaria={meta.metaDiaria}
-                onRemover={removerLancamento}
-              />
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setSelected('metas')}
+                  className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
+                >
+                  <i className="ti ti-arrow-left text-[14px]" aria-hidden />
+                  Metas
+                </button>
+
+                <button
+                  onClick={resetar}
+                  className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
+                >
+                  <i className="ti ti-refresh text-[14px]" aria-hidden />
+                  Nova meta
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
+
+            {/* Resumo */}
+            {meta.resumo && <ResumoCards resumo={meta.resumo} />}
+
+            {/* Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+
+              {/* Form */}
+              <div className="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
+                <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-4 flex items-center gap-2">
+                  <i
+                    className="ti ti-calendar-plus text-[16px] text-emerald-500"
+                    aria-hidden
+                  />
+                  Registrar hoje
+                </h2>
+
+                <FormLancamento
+                  metaId={meta.id}
+                  metaDiaria={meta.metaDiaria}
+                  onSubmit={adicionarLancamento}
+                  diasTrabalhados={lancamentos.length}
+                  diasTotal={meta.diasRestantes ?? meta.diasTrabalhados}
+                />
+              </div>
+
+              {/* Histórico */}
+              <div className="lg:col-span-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-2">
+                    <i
+                      className="ti ti-list text-[16px] text-zinc-400"
+                      aria-hidden
+                    />
+                    Histórico de dias
+                  </h2>
+
+                  {lancamentos.length > 0 && (
+                    <span className="text-xs text-zinc-400">
+                      {
+                        lancamentos.filter((l) => l.bateuMeta).length
+                      } de {lancamentos.length} acima da meta
+                    </span>
+                  )}
+                </div>
+
+                <Listalancamentos
+                  lancamentos={lancamentos}
+                  metaDiaria={meta.metaDiaria}
+                  onRemover={removerLancamento}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </main>
+  </div>
+)
 }
