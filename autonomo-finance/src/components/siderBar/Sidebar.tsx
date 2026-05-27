@@ -19,8 +19,6 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const { getGoals } = useMeta();
 
-  console.log("aaaaaaaaqui " + session?.backendToken)
-
   return (
     <>
       {/* Botão hamburguer mobile */}

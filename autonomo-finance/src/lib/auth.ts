@@ -14,15 +14,12 @@ export const authOptions: NextAuthOptions = {
 
     async signIn({ user }) {
       try {
-            console.log('Chamando backend:', process.env.NEXT_PUBLIC_API_URL)
+
         const data = await createToken({
           nome:   user.name!,
           email:  user.email!,
           imagem: user.image ?? undefined,
         })
-
-           console.log('Resposta do backend:', data)
-
 
         user.backendToken = data.token
         user.userId    = data.user.id

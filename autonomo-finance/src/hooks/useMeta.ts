@@ -28,6 +28,14 @@ export function useMeta(metasIniciais: MetaCard[] = []) {
     }
   }, [session?.backendToken]);
 
+  
+ if(!meta) { 
+  console.log("Nao tem");
+ } else { 
+  console.log("tem");
+ }
+
+
   const getGoals = useCallback(
     async (token: string) => {
       try {
@@ -41,7 +49,7 @@ export function useMeta(metasIniciais: MetaCard[] = []) {
         setLoading(false);
       }
     },
-    [getUserGoals],
+    [],
   );
 
   const definirMeta = useCallback(
