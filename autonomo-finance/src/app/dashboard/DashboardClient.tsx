@@ -37,7 +37,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
       <Sidebar />
 
       <main className="md:ml-60 min-h-screen p-6 flex flex-col">
-        <div className="flex-1 w-full max-w-7xl mx-auto space-y-6">
+        <div className="mt-6 flex-1 w-full max-w-7xl mx-auto space-y-6">
           {selected === "metas" && (
             <>
               {metaCard.length === 0 ? (
