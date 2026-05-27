@@ -1,6 +1,6 @@
 import type { Lancamento, Meta, ResumoMeta, CategoriaGasto, TipoTrabalho } from '@/types'
 
-// ─── Formatação ───────────────────────────────────────────────────────────────
+
 
 export function formatBRL(value: number | string): string {
   const num = Number(value)
@@ -16,7 +16,6 @@ export function formatPercent(value: number): string {
   return `${Math.round(value)}%`
 }
 
-// ─── Cálculos de meta ─────────────────────────────────────────────────────────
 
 export function calcularMetaDiaria(valorMeta: number, diasTrabalho: number): number {
   if (diasTrabalho === 0) return 0
@@ -27,36 +26,7 @@ export function calcularLucro(bruto: number, totalGastos: number): number {
   return bruto - totalGastos
 }
 
-// export function calcularResumo(meta: Meta, lancamentos: Lancamento[]): ResumoMeta {
-//   const lucroAcumulado = lancamentos.reduce((s, l) => s + l.lucro, 0)
-//   const totalGastos    = lancamentos.reduce((s, l) => s + l.totalGastos, 0)
-//   const totalBruto     = lancamentos.reduce((s, l) => s + l.valorBruto, 0)
 
-//   const faltaParaMeta        = Math.max(0, meta.valorMeta - lucroAcumulado)
-//   const diasTrabalhados      = lancamentos.length
-//   const diasRestantes        = Math.max(0, meta.diasTrabalho - diasTrabalhados)
-//   const percentualConcluido  = Math.min(100, (lucroAcumulado / meta.valorMeta) * 100)
-//   const mediaLucroDia        = diasTrabalhados > 0 ? lucroAcumulado / diasTrabalhados : 0
-//   const metaDiariaAtualizada = diasRestantes > 0 ? faltaParaMeta / diasRestantes : 0
-//   const projecaoFinal        = mediaLucroDia * meta.diasTrabalho
-
-//   return {
-//     meta,
-//     lucroAcumulado,
-//     totalGastos,
-//     totalBruto,
-//     faltaParaMeta,
-//     diasTrabalhados,
-//     diasRestantes,
-//     percentualConcluido,
-//     mediaLucroDia,
-//     metaDiariaAtualizada,
-//     projecaoFinal,
-//     lancamentos,
-//   }
-// }
-
-// ─── Labels legíveis ──────────────────────────────────────────────────────────
 
 export const LABELS_TIPO: Record<TipoTrabalho, string> = {
   motorista:  'Motorista',
@@ -88,7 +58,6 @@ export const MESES = [
   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
 ]
 
-// ─── Status da meta diária ────────────────────────────────────────────────────
 
 export function statusDia(lucro: number, metaDiaria: number) {
   if (lucro >= metaDiaria * 1.2) return { label: 'Acima ↑', color: 'success' }

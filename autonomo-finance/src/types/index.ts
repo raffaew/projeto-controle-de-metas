@@ -1,5 +1,3 @@
-// ─── Enums ────────────────────────────────────────────────────────────────────
-
 export type TipoTrabalho =
   | "motorista"
   | "entregador"
@@ -17,8 +15,6 @@ export type CategoriaGasto =
 
 export type NavPage = "dashboard" | "metas" | "lancamentos" | "relatorios";
 
-// ─── Entidades do banco ────────────────────────────────────────────────────────
-
 export interface User {
   id?: string;
   nome: string;
@@ -33,7 +29,7 @@ export interface Meta {
   userId?: string;
   tipoTrabalho: TipoTrabalho;
   valorMeta: number;
-  lancamento?: Lancamento[],
+  lancamento?: Lancamento[];
   diasTrabalho: number;
   metaDiaria: number; // valorMeta / diasTrabalho
   mes: number; // 1–12
@@ -43,26 +39,21 @@ export interface Meta {
 
 export interface Lancamento {
   id?: string;
-  //metaId: string;
-  //userId: string;
-  diaNumero?: number; // 1, 2, 3... dentro do ciclo
+
+  diaNumero?: number;
   valorBruto: number;
   gastos: Gasto[];
-  totalGastos?: number; // soma calculada
-  lucro?: number; // bruto - totalGastos
-  bateuMeta?: boolean; // lucro >= meta.metaDiaria
+  totalGastos?: number;
+  lucro?: number;
+  bateuMeta?: boolean;
   data?: Date;
 }
 
 export interface Gasto {
   id?: string;
-  //lancamentoId: string;
-  //descricao: string;
   valor: number;
   categoria: CategoriaGasto;
 }
-
-// ─── Tipos de formulário (sem id, sem campos calculados) ───────────────────────
 
 export interface MetaForm {
   valorMeta: number;
@@ -72,19 +63,15 @@ export interface MetaForm {
 }
 
 export interface LancamentoForm {
-  //metaId: string;
   valorBruto: number;
   gastos: GastoForm[];
   data?: Date;
 }
 
 export interface GastoForm {
-  //descricao: string;
   valor: number;
   categoria: CategoriaGasto;
 }
-
-// ─── Tipos calculados para o dashboard (não persistidos) ──────────────────────
 
 export interface ResumoMeta {
   id?: string;
@@ -109,8 +96,6 @@ export interface DiaHistorico {
   totalGastos: number;
 }
 
-// ─── Tipos de relatório ───────────────────────────────────────────────────────
-
 export interface RelatorioMensal {
   meta: Meta;
   resumo: ResumoMeta;
@@ -120,8 +105,6 @@ export interface RelatorioMensal {
   diasAcimaMeta: number;
   diasAbaixoMeta: number;
 }
-
-// ─── API response helpers ─────────────────────────────────────────────────────
 
 export interface ApiResponse<T> {
   data?: T;
@@ -136,19 +119,18 @@ export interface PaginatedResponse<T> {
 }
 
 export interface MetaCard {
-  id:              string
-  tipoTrabalho:    TipoTrabalho
-  mes:             number
-  ano:             number
-  valorMeta:       number
-  metaDiaria:      number
-  lucroAcumulado:  number
-  diasTrabalhados: number
-  diasRestantes:    number
-  percentualConcluido: number
-  faltaParaMeta: number
-  metaDiariaAtualizada: number
-  lancamentos?: Lancamento[]
-  resumo: ResumoMeta
-  
+  id: string;
+  tipoTrabalho: TipoTrabalho;
+  mes: number;
+  ano: number;
+  valorMeta: number;
+  metaDiaria: number;
+  lucroAcumulado: number;
+  diasTrabalhados: number;
+  diasRestantes: number;
+  percentualConcluido: number;
+  faltaParaMeta: number;
+  metaDiariaAtualizada: number;
+  lancamentos?: Lancamento[];
+  resumo: ResumoMeta;
 }

@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    // 1 — dispara após o Google autenticar
+
     async signIn({ user }) {
       try {
             console.log('Chamando backend:', process.env.NEXT_PUBLIC_API_URL)
@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
 
            console.log('Resposta do backend:', data)
 
-        // guarda para os próximos callbacks
+
         user.backendToken = data.token
         user.userId    = data.user.id
 
@@ -34,18 +34,16 @@ export const authOptions: NextAuthOptions = {
   }
     },
 
-    // 2 — copia do user para o token (persiste)
+
     async jwt({ token, user }) {
       if (user) {
         token.backendToken = user.backendToken
-        // token.backendId    = user.backendId
       }
       return token
     },
 
     async session({ session, token }) {
       session.backendToken = token.backendToken as string
-      //session.backendId    = token.backendId    as string
       return session
     },
   },

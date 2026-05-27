@@ -30,14 +30,15 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
             className="flex items-center gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 group"
           >
             {/* Dia */}
-            <div className="w-9 h-9 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center shrink-0">
+            {/* <div className="w-9 h-9 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center shrink-0">
               <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">{}</span>
-            </div>
+            </div> */}
 
             {/* Detalhes */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                  Lucro: 
                   {formatBRL(l.lucro ?? 0)}
                 </span>
                 <Badge variant={l.bateuMeta ? 'success' : superou ? 'success' : 'warning'}>

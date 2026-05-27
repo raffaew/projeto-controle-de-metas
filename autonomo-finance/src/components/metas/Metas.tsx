@@ -3,20 +3,6 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { formatBRL, MESES, LABELS_TIPO } from "@/lib/utils";
 import type { MetaCard } from "@/types";
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────
-
-// export interface MetaCard {
-//   id:              string
-//   tipoTrabalho:    TipoTrabalho
-//   mes:             number
-//   ano:             number
-//   valorMeta:       number
-//   metaDiaria:      number
-//   lucroAcumulado:  number
-//   diasTrabalhados: number
-//   diasRestantes:    number
-// }
-
 interface MetasViewProps {
   metas: MetaCard[];
   loading: boolean;
@@ -24,8 +10,6 @@ interface MetasViewProps {
   onDeletarMeta: (id: string) => void;
   onNovaMeta: () => void;
 }
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function getStatus(pct: number): {
   label: string;
@@ -36,8 +20,6 @@ function getStatus(pct: number): {
   if (pct >= 30) return { label: "Atenção", variant: "warning" };
   return { label: "Em risco", variant: "danger" };
 }
-
-// ─── Card individual ──────────────────────────────────────────────────────────
 
 function MetaCardItem({
   meta,
@@ -65,14 +47,12 @@ function MetaCardItem({
         <Badge variant={status.variant}>{status.label}</Badge>
       </div>
 
-      {/* Progresso */}
       <ProgressBar
         value={meta.resumo.percentualConcluido}
         label="Progresso"
         showPercent
       />
 
-      {/* Stats */}
       <div className="grid grid-cols-2 gap-2">
         <div className="bg-zinc-800/60 rounded-xl p-3">
           <p className="text-xs text-zinc-500 mb-0.5">Lucro acumulado</p>
@@ -91,7 +71,6 @@ function MetaCardItem({
           <p className="text-sm font-medium text-zinc-100">
             {meta.resumo.diasTrabalhados}
             <span className="text-zinc-500 font-normal">
-              {" "}
               de {meta.resumo.diasRestantes}
             </span>
           </p>
@@ -104,18 +83,17 @@ function MetaCardItem({
         </div>
       </div>
 
-      {/* Ações */}
       <div className="flex gap-2 pt-1 border-t border-zinc-800">
         <button
           onClick={onVer}
-          className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl border border-zinc-700 text-sm font-medium text-zinc-200 hover:bg-zinc-800 transition-colors"
+          className="cursor-pointer flex-1 flex items-center justify-center gap-2 py-2 rounded-xl border border-zinc-700 text-sm font-medium text-zinc-200 hover:bg-zinc-800 transition-colors"
         >
           <i className="ti ti-layout-dashboard text-[16px]" aria-hidden />
           Ver dashboard
         </button>
         <button
           onClick={onDeletar}
-          className="w-9 h-9 flex items-center justify-center rounded-xl border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-900 hover:bg-red-950/30 transition-colors"
+          className="cursor-pointer w-9 h-9 flex items-center justify-center rounded-xl border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-900 hover:bg-red-950/30 transition-colors"
           aria-label="Excluir meta"
         >
           <i className="ti ti-trash text-[15px]" aria-hidden />
@@ -124,8 +102,6 @@ function MetaCardItem({
     </div>
   );
 }
-
-// ─── View principal ───────────────────────────────────────────────────────────
 
 export function Metas({
   metas,
@@ -144,7 +120,6 @@ export function Metas({
 
   return (
     <>
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">
@@ -156,7 +131,7 @@ export function Metas({
         </div>
         <button
           onClick={onNovaMeta}
-          className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
+          className="cursor-pointer flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
         >
           <i className="ti ti-refresh text-[14px]" aria-hidden />
           Nova meta

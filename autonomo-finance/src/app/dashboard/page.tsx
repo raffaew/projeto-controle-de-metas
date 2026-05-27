@@ -1,6 +1,3 @@
-// src/app/dashboard/page.tsx
-// Server Component — busca as metas antes de renderizar
-
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
@@ -14,7 +11,7 @@ async function getMetas(token: string): Promise<MetaCard[]> {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      cache: 'no-store', // sempre busca dados frescos — sem cache
+      cache: 'no-store',
     })
 
     if (!res.ok) return []

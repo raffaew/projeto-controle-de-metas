@@ -1,6 +1,6 @@
 import type { Meta, Lancamento } from "@prisma/client";
 
-// ─── Enums ────────────────────────────────────────────────────────────────────
+
 
 export type TipoTrabalho =
   | "motorista"
@@ -17,7 +17,7 @@ export type CategoriaGasto =
   | "taxas_app"
   | "outros";
 
-// ─── Tipos de entrada (o que chega no service via controller) ─────────────────
+
 
 export interface User {
   id?: string;
@@ -50,7 +50,6 @@ export interface GastoForm {
   categoria: CategoriaGasto;
 }
 
-// ─── Tipos de resposta da API ─────────────────────────────────────────────────
 
 export interface ApiResponse<T> {
   data?: T;
@@ -65,9 +64,6 @@ export interface PaginatedResponse<T> {
   pageSize: number;
 }
 
-// ─── Tipos calculados (montados no service antes de responder) ────────────────
-
-// Lançamento com gastos incluídos — o Prisma não inclui relações por padrão
 export type LancamentoComGastos = Lancamento & {
   gastos: {
     id: string;
@@ -77,12 +73,12 @@ export type LancamentoComGastos = Lancamento & {
   }[];
 };
 
-// Meta com lançamentos incluídos
+
 export type MetaComLancamentos = Meta & {
   lancamentos: LancamentoComGastos[];
 };
 
-// Resumo calculado — retornado pela rota de relatórios
+
 export interface ResumoMeta {
   meta: Meta;
   lucroAcumulado: number;
@@ -98,7 +94,7 @@ export interface ResumoMeta {
   lancamentos: LancamentoComGastos[];
 }
 
-// Relatório mensal — retornado pela rota de relatórios
+
 export interface RelatorioMensal {
   meta: Meta;
   resumo: ResumoMeta;

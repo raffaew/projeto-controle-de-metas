@@ -4,6 +4,7 @@ import { useNav } from "@/context/navContex";
 import type { NavPage } from "@/types/index";
 import { cn } from "@/lib/cn";
 import { useState } from "react";
+import { useMeta } from "@/hooks/useMeta";
 
 const NAV: { id: NavPage; icon: string; label: string }[] = [
   { id: "dashboard", icon: "layout-dashboard", label: "Dashboard" },
@@ -16,6 +17,9 @@ export function Sidebar() {
   const { selected, setSelected } = useNav();
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const { getGoals } = useMeta();
+
+  console.log("aaaaaaaaqui " + session?.backendToken)
 
   return (
     <>
@@ -34,7 +38,6 @@ export function Sidebar() {
         <i className="ti ti-menu-2 text-xl" />
       </button>
 
-      {/* Overlay */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
@@ -48,7 +51,7 @@ export function Sidebar() {
         />
       )}
 
-      {/* Sidebar */}
+
       <aside
         className={`
           fixed
@@ -72,19 +75,18 @@ export function Sidebar() {
           md:translate-x-0
         `}
       >
-        {/* Header */}
+
         <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-800">
           <span className="font-semibold text-base tracking-tight text-zinc-900 dark:text-zinc-100">
             <span className="text-emerald-500">●</span> AutoFinance
           </span>
 
-          {/* Fechar mobile */}
+
           <button onClick={() => setIsOpen(false)} className="md:hidden">
             <i className="ti ti-x text-xl" />
           </button>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-0.5">
           {NAV.map((item) => {
             const active = selected === item.id;
@@ -96,6 +98,7 @@ export function Sidebar() {
                   if (item.id === "metas") {
                     setSelected(item.id as NavPage);
                     setIsOpen(false);
+                     getGoals(session?.backendToken!);
                   }
                 }}
                 className={cn(
@@ -112,7 +115,6 @@ export function Sidebar() {
           })}
         </nav>
 
-        {/* Footer */}
         <div className="px-4 py-4 border-t border-zinc-200 dark:border-zinc-800">
           {session?.user ? (
             <div className="flex items-center gap-3 px-2">

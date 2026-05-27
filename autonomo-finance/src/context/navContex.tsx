@@ -3,6 +3,7 @@
 import { createContext, useContext, useState} from "react";
 import type { NavPage } from "@/types/index";
 
+
 interface NavContextProps {
   selected: NavPage
   setSelected: (page: NavPage) => void

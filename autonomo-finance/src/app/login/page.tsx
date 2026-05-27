@@ -8,7 +8,6 @@ export default function LoginPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
-  // Se já estiver logado, redireciona para o dashboard
   useEffect(() => {
     if (session) router.push('/dashboard')
   }, [session, router])
@@ -25,7 +24,6 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4">
       <div className="w-full max-w-sm">
 
-        {/* Logo / marca */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 mb-5">
             <i className="ti ti-chart-line text-[28px] text-emerald-600 dark:text-emerald-400" aria-hidden />
@@ -38,7 +36,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card de login */}
+
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 shadow-sm">
 
           <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
@@ -48,7 +46,6 @@ export default function LoginPage() {
             Entre com sua conta Google para acessar o painel
           </p>
 
-          {/* Botão Google */}
           <button
             onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 cursor-pointer dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-all active:scale-[0.98] shadow-sm"
@@ -63,12 +60,12 @@ export default function LoginPage() {
             Entrar com Google
           </button>
 
-          {/* Divider */}
+       
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
           </div>
 
-          {/* Info sobre o app */}
+        
           <div className="space-y-2.5">
             {[
               { icon: 'target', text: 'Defina metas mensais de lucro' },

@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn'
 
 interface ProgressBarProps {
-  value: number  // 0–100
+  value: number  
   label?: string
   showPercent?: boolean
   className?: string
@@ -15,7 +15,6 @@ function getColor(v: number) {
 }
 
 export function ProgressBar({ value, label, showPercent = true, className }: ProgressBarProps) {
-  //const clamped = Math.min(100, Math.max(0, value))
 
   return (
     <div className={cn('w-full', className)}>
