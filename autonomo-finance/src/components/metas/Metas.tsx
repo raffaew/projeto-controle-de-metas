@@ -32,7 +32,7 @@ function MetaCardItem({
 }) {
   const status = getStatus(meta.resumo.percentualConcluido);
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4 hover:border-zinc-700 transition-colors">
+    <div className="bg-white bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4 hover:border-zinc-700 transition-colors">
       {/* Cabeçalho */}
       <div className="flex items-start justify-between">
         <div>
@@ -54,7 +54,7 @@ function MetaCardItem({
       />
 
       <div className="grid grid-cols-2 gap-2">
-        <div className="bg-zinc-800/60 rounded-xl p-3">
+        <div className=" bg-zinc-800/60 rounded-xl p-3">
           <p className="text-xs text-zinc-500 mb-0.5">Lucro acumulado</p>
           <p className="text-sm font-medium text-emerald-400">
             {formatBRL(meta.resumo.lucroAcumulado)}
