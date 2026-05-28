@@ -1,11 +1,34 @@
-Sistema de controle financeiro para trabalhadores autônomos — motoristas de aplicativo, entregadores, vendedores, freelancers e prestadores de serviço.
+> Controle financeiro para trabalhadores autônomos — motoristas, entregadores, vendedores, freelancers e prestadores de serviço.
 
-A ideia é simples: você define uma meta de lucro mensal e quantos dias pretende trabalhar. A cada dia, informa o valor bruto recebido e os gastos. O sistema calcula o lucro, mostra se você bateu a meta do dia e recalcula automaticamente quanto você precisa fazer por dia para ainda atingir a meta no final do mês.
+🔗 **[Ver projeto em produção](https://projeto-controle-de-metas.vercel.app)**
+
+---
+
+## Sobre o projeto
+
+A ideia é simples: você define quanto quer lucrar e em quantos dias pretende trabalhar. A cada dia, registra o valor bruto recebido e os gastos. O sistema calcula o lucro líquido, mostra seu progresso e recalcula automaticamente quanto você precisa fazer por dia para atingir a meta.
+
+---
+
+## Telas
+
+### Login
+![Tela de login](./docs/screenshot-login.png)
+
+### Configuração de meta
+![Configuração de meta](./docs/screenshot-meta.png)
+
+### Dashboard
+![Dashboard](./docs/screenshot-dashboard.png)
+
+### Minhas metas
+![Minhas metas](./docs/screenshot-metas.png)
 
 ---
 
 ## Funcionalidades
 
+- Autenticação com Google via NextAuth.js
 - Configuração de meta mensal por tipo de trabalho
 - Cálculo automático da meta diária necessária
 - Registro de ganhos e gastos por categoria (combustível, alimentação, manutenção, taxas de app)
@@ -13,31 +36,29 @@ A ideia é simples: você define uma meta de lucro mensal e quantos dias pretend
 - Recálculo dinâmico da meta diária conforme os dias passam
 - Projeção de fechamento do mês no ritmo atual
 - Histórico de dias com status visual (acima, na meta, abaixo)
-- Alerta quando o ritmo atual não é suficiente para atingir a meta
+- Gerenciamento de múltiplas metas simultâneas
 
 ---
 
 ## Stack
 
 ### Frontend
-- **Next.js 15** — App Router para estrutura moderna de aplicações React
-- **TypeScript** — tipagem estática em todo o projeto
-- **Tailwind CSS v4** — estilização utilitária e responsiva
-
----
+- **Next.js 15** — App Router com Server Components
+- **TypeScript** — tipagem completa em todo o projeto
+- **Tailwind CSS** — estilização utility-first
+- **NextAuth.js** — autenticação com Google OAuth
 
 ### Backend
-- **Node.js** — runtime JavaScript no servidor
-- **TypeScript** — tipagem estática no backend
-- **Express** — framework para criação da API REST
-- **Prisma ORM** — gerenciamento e acesso ao banco de dados
-- **JWT Authentication** — autenticação e autorização via tokens
-- **REST API**  
+- **Node.js + Express** — estruturado em routes, controllers e services
+- **TypeScript** — tipagem no backend também
+- **Prisma ORM** — acesso ao banco com queries tipadas
+- **JWT** — autenticação das rotas da API
+
+### Banco de dados
+- **PostgreSQL** hospedado no **Supabase**
+
+### Deploy
+- **Frontend** → Vercel
+- **Backend** → Render
+
 ---
-
-### Banco de Dados
-- **PostgreSQL (Supabase)** — banco relacional utilizado para persistência dos dados
-
----
-
-
