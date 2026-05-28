@@ -1,4 +1,4 @@
-> Controle financeiro para trabalhadores autônomos — motoristas, entregadores, vendedores, freelancers e prestadores de serviço.
+> Controle financeiro para trabalhadores autônomos.
 
 🔗 **[Ver projeto em produção](https://projeto-controle-de-metas.vercel.app)**
 
@@ -12,17 +12,22 @@ A ideia é simples: você define quanto quer lucrar e em quantos dias pretende t
 
 ## Telas
 
-### Login
-![Tela de login](./docs/screenshot-login.png)
+<div align="center">
+  <img src="./docs/screenshot-login.png" width="45%" alt="Tela de login" />
+  <img src="./docs/screenshot-meta.png" width="45%" alt="Configuração de meta" />
+</div>
 
-### Configuração de meta
-![Configuração de meta](./docs/screenshot-meta.png)
+<br />
 
-### Dashboard
-![Dashboard](./docs/screenshot-dashboard.png)
+<div align="center">
+  <img src="./docs/screenshot-dashboard.png" width="90%" alt="Dashboard" />
+</div>
 
-### Minhas metas
-![Minhas metas](./docs/screenshot-metas.png)
+<br />
+
+<div align="center">
+  <img src="./docs/screenshot-metas.png" width="90%" alt="Minhas metas" />
+</div>
 
 ---
 
