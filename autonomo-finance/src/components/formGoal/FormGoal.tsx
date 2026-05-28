@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { MetaForm, TipoTrabalho, Meta } from '@/types'
-import { LABELS_TIPO, calcularMetaDiaria, formatBRL, MESES } from '@/lib/utils'
+import { LABELS_TYPE, calculateDailyGoal, formatBRL, MONTHS } from '@/lib/utils'
 import { cn } from '@/lib/cn'
 import { useNav } from '@/context/navContex'
 
@@ -37,7 +37,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
    const { setSelected } = useNav()
 
   const metaDiaria = form.valorMeta > 0 && form.diasTrabalho > 0
-    ? calcularMetaDiaria(form.valorMeta, form.diasTrabalho)
+    ? calculateDailyGoal(form.valorMeta, form.diasTrabalho)
     : 0
 
   function set(field: keyof MetaForm, value: number) {
@@ -90,7 +90,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
               )}
             >
               <i className={`ti ti-${ICONES_TIPO[t]} text-[20px]`} aria-hidden />
-              {LABELS_TIPO[t].split(' ')[0]}
+              {LABELS_TYPE[t].split(' ')[0]}
             </button>
           ))}
         </div>
@@ -105,7 +105,7 @@ export function FormMeta({ onSubmit }: FormMetaProps) {
             onChange={e => set('mes', Number(e.target.value))}
             className="w-full py-2.5 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
           >
-            {MESES.map((m, i) => (
+            {MONTHS.map((m, i) => (
               <option key={i} value={i + 1}>{m}</option>
             ))}
           </select>

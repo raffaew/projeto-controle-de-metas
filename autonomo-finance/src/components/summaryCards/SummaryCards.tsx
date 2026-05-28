@@ -2,13 +2,13 @@
 import { MetricCard } from '@/components/ui/MetricCard'
 import { ProgressBar } from '@/components/ui/ProgressBar'
 import type { ResumoMeta } from '@/types'
-import { formatBRL, statusMeta } from '@/lib/utils'
+import { formatBRL, statusGoal } from '@/lib/utils'
 
 interface ResumoCardsProps {
   resumo: ResumoMeta
 }
 
-export function ResumoCards({ resumo }: ResumoCardsProps) {
+export function SummaryCards({ resumo }: ResumoCardsProps) {
   const {
     lucroAcumulado,
     faltaParaMeta,
@@ -20,7 +20,7 @@ export function ResumoCards({ resumo }: ResumoCardsProps) {
     totalBruto,
   } = resumo
 
-  const status = statusMeta(percentualConcluido)
+  const status = statusGoal(percentualConcluido)
 
   return (
     <div className="space-y-4">

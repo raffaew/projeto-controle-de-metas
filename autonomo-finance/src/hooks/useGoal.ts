@@ -11,11 +11,11 @@ import {
 } from "@/lib/api";
 import { useSession } from "next-auth/react";
 
-export function useMeta(metasIniciais: MetaCard[] = []) {
-  const [meta, setMeta] = useState<MetaCard | null>(metasIniciais[0] ?? null);
-  const [metaCard, setMetaCard] = useState<MetaCard[]>(metasIniciais);
-  const [lancamentos, setLancamentos] = useState<Lancamento[]>(
-    metasIniciais[0]?.lancamentos || [],
+export function useMeta(initialGoals: MetaCard[] = []) {
+  const [goal, setGoal] = useState<MetaCard | null>(initialGoals[0] ?? null);
+  const [metaCard, setGoalCard] = useState<MetaCard[]>(initialGoals);
+  const [releases, setRelease] = useState<Lancamento[]>(
+    initialGoals[0]?.lancamentos || [],
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,25 +23,25 @@ export function useMeta(metasIniciais: MetaCard[] = []) {
   const { data: session } = useSession();
 
   useEffect(() => {
-    if (session?.backendToken && metasIniciais.length === 0) {
-      getGoals(session.backendToken);
+    if (session?.backendToken && initialGoals.length === 0) {
+      handleGetUserGoal(session.backendToken);
     }
   }, [session?.backendToken]);
 
   
- if(!meta) { 
+ if(!goal) { 
   console.log("Nao tem");
  } else { 
   console.log("tem");
  }
 
 
-  const getGoals = useCallback(
+  const handleGetUserGoal = useCallback(
     async (token: string) => {
       try {
         setLoading(true);
         const goals: MetaCard[] = await getUserGoals(token);
-        setMetaCard(goals);
+        setGoalCard(goals);
         return goals;
       } catch (error) {
         console.error("erro ao buscar metas:", error);
@@ -52,14 +52,14 @@ export function useMeta(metasIniciais: MetaCard[] = []) {
     [],
   );
 
-  const definirMeta = useCallback(
+  const handleCreateGoal = useCallback(
     async (novaMeta: Meta) => {
       try {
         setLoading(true);
         const goal = await createGoal(novaMeta, session?.backendToken || "");
-        setMeta(goal);
-        setLancamentos([]);
-        await getGoals(session?.backendToken!);
+        setGoal(goal);
+        setRelease([]);
+        await handleGetUserGoal(session?.backendToken!);
       } catch (error) {
         setError(error as string);
         console.error("erro definirMeta:", error);
@@ -67,38 +67,38 @@ export function useMeta(metasIniciais: MetaCard[] = []) {
         setLoading(false);
       }
     },
-    [session?.backendToken, getGoals],
+    [session?.backendToken, handleGetUserGoal],
   );
 
-  const selecionarMeta = useCallback((metaSelecionada: MetaCard) => {
-    setMeta(metaSelecionada);
-    setLancamentos(metaSelecionada?.lancamentos || []);
+  const handleSelectRelease = useCallback((metaSelecionada: MetaCard) => {
+    setGoal(metaSelecionada);
+    setRelease(metaSelecionada?.lancamentos || []);
   }, []);
 
-  const deletarMeta = useCallback(
+  const handleDeleteGoal = useCallback(
     async (metaId: string) => {
       try {
         setLoading(true);
         await deleteGoal(metaId, session?.backendToken || "");
-        setMetaCard((prev) => prev.filter((m) => m.id !== metaId));
+        setGoalCard((prev) => prev.filter((m) => m.id !== metaId));
 
-        if (meta?.id === metaId) {
-          setMeta(null);
-          setLancamentos([]);
+        if (goal?.id === metaId) {
+          setGoal(null);
+          setRelease([]);
         }
       } catch (error) {
         setError("Erro ao deletar meta");
-        console.error("erro deletarMeta:", error);
+        console.error("erro handleDeleteGoal:", error);
       } finally {
         setLoading(false);
       }
     },
-    [session?.backendToken, meta?.id],
+    [session?.backendToken, goal?.id],
   );
 
-  const adicionarLancamento = useCallback(
+  const handleAddRelease = useCallback(
     async (form: LancamentoForm) => {
-      if (!meta) return;
+      if (!goal) return;
       try {
         setLoading(true);
         const novo: Lancamento = {
@@ -108,68 +108,68 @@ export function useMeta(metasIniciais: MetaCard[] = []) {
 
         const release = await createRelease(
           novo,
-          meta.id,
+          goal.id,
           session?.backendToken!,
         );
-        setLancamentos((prev) => [...prev, release]);
+        setRelease((prev) => [...prev, release]);
 
 
-        const goalsAtualizados = await getGoals(session?.backendToken!);
+        const goalsAtualizados = await handleGetUserGoal(session?.backendToken!);
         if (goalsAtualizados) {
-          const metaAtualizada = goalsAtualizados.find((m) => m.id === meta.id);
-          if (metaAtualizada) setMeta(metaAtualizada);
+          const metaAtualizada = goalsAtualizados.find((m) => m.id === goal.id);
+          if (metaAtualizada) setGoal(metaAtualizada);
         }
       } catch (error) {
-        console.error("erro adicionarLancamento:", error);
+        console.error("erro handleAddRelease:", error);
       } finally {
         setLoading(false);
       }
     },
-    [session?.backendToken, meta?.id],
+    [session?.backendToken, goal?.id],
   );
 
-  const removerLancamento = useCallback(
+  const handleDeleteRelease = useCallback(
     async (id: string) => {
       try {
         setLoading(true);
         await deleteRelease(id, session?.backendToken || "");
-        setLancamentos((prev) => prev.filter((l) => l.id !== id));
+        setRelease((prev) => prev.filter((l) => l.id !== id));
 
   
-        const goalsAtualizados = await getGoals(session?.backendToken!);
+        const goalsAtualizados = await handleGetUserGoal(session?.backendToken!);
         if (goalsAtualizados) {
           const metaAtualizada = goalsAtualizados.find(
-            (m) => m.id === meta?.id,
+            (m) => m.id === goal?.id,
           );
-          if (metaAtualizada) setMeta(metaAtualizada);
+          if (metaAtualizada) setGoal(metaAtualizada);
         }
       } catch (error) {
-        console.error("erro removerLancamento:", error);
+        console.error("erro handleDeleteRelease:", error);
       } finally {
         setLoading(false);
       }
     },
-    [meta?.id, session?.backendToken, getGoals],
+    [goal?.id, session?.backendToken, handleGetUserGoal],
   );
 
-  const resetar = useCallback(() => {
-    setMeta(null);
-    setLancamentos([]);
+  const reset = useCallback(() => {
+    setGoal(null);
+    setRelease([]);
     setError(null);
   }, []);
 
   return {
-    meta,
-    lancamentos,
+    goal,
+    releases,
     metaCard,
     loading,
     error,
-    definirMeta,
-    adicionarLancamento,
-    removerLancamento,
-    resetar,
-    selecionarMeta,
-    deletarMeta,
-    getGoals,
+    handleCreateGoal,
+    handleAddRelease,
+    handleDeleteRelease,
+    reset,
+    handleSelectRelease,
+    handleDeleteGoal,
+    handleGetUserGoal,
   };
 }

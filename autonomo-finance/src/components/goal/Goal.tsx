@@ -1,14 +1,14 @@
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
-import { formatBRL, MESES, LABELS_TIPO } from "@/lib/utils";
+import { formatBRL, MONTHS, LABELS_TYPE } from "@/lib/utils";
 import type { MetaCard } from "@/types";
 
-interface MetasViewProps {
+interface GoalViewProps {
   metas: MetaCard[];
   loading: boolean;
-  onVerMeta: (meta: MetaCard) => void;
-  onDeletarMeta: (id: string) => void;
-  onNovaMeta: () => void;
+  onViewGoal: (meta: MetaCard) => void;
+  onDeleteGoal: (id: string) => void;
+  onNewGoal: () => void;
 }
 
 function getStatus(pct: number): {
@@ -21,7 +21,7 @@ function getStatus(pct: number): {
   return { label: "Em risco", variant: "danger" };
 }
 
-function MetaCardItem({
+function GoalCardItem({
   meta,
   onVer,
   onDeletar,
@@ -46,7 +46,7 @@ function MetaCardItem({
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">
-            {LABELS_TIPO[meta.tipoTrabalho]} · {MESES[meta.mes - 1]} {meta.ano}
+            {LABELS_TYPE[meta.tipoTrabalho]} · {MONTHS[meta.mes - 1]} {meta.ano}
           </p>
 
           <p className="text-base font-medium text-zinc-900 dark:text-zinc-100">
@@ -157,13 +157,13 @@ function MetaCardItem({
   );
 }
 
-export function Metas({
+export function Goal({
   metas,
   loading = false,
-  onVerMeta,
-  onDeletarMeta,
-  onNovaMeta,
-}: MetasViewProps) {
+  onViewGoal,
+  onDeleteGoal,
+  onNewGoal,
+}: GoalViewProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -184,7 +184,7 @@ export function Metas({
           </h1>
         </div>
         <button
-          onClick={onNovaMeta}
+          onClick={onNewGoal}
           className="cursor-pointer flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
         >
           <i className="ti ti-refresh text-[14px]" aria-hidden />
@@ -194,11 +194,11 @@ export function Metas({
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {metas.map((meta) => (
-          <MetaCardItem
+          <GoalCardItem
             key={meta.id}
             meta={meta}
-            onVer={() => onVerMeta(meta)}
-            onDeletar={() => onDeletarMeta(meta.id)}
+            onVer={() => onViewGoal(meta)}
+            onDeletar={() => onDeleteGoal(meta.id)}
           />
         ))}
       </div>

@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
         />
       </head>
-      <body className={`${geist.variable} ${geistMono.variable} antialiased bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}>
+      <body suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} antialiased bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}>
         <Providers session={session}>
         {children}
         </Providers>

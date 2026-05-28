@@ -1,16 +1,17 @@
 "use client";
 
-import { useMeta } from "@/hooks/useMeta";
-import { ResumoCards } from "@/components/resumoCards/ResumoCards";
-import { FormLancamento } from "@/components/formLancamentos/FormLancamento";
-import { Listalancamentos } from "@/components/formLancamentos/ListaLancamentos";
+import { useMeta } from "@/hooks/useGoal";
+import { SummaryCards } from "@/components/summaryCards/SummaryCards";
+import { FormRelease } from "@/components/formRelese/FormReleases";
+import { ListRelease } from "@/components/formRelese/ListReleases";
 import { Sidebar } from "@/components/siderBar/Sidebar";
-import { LABELS_TIPO, MESES } from "@/lib/utils";
+import { LABELS_TYPE, MONTHS } from "@/lib/utils";
 import { useNav } from "@/context/navContex";
-import { Lancamentos } from "@/components/lancamentos/Lancamentos";
-import { Metas } from "@/components/metas/Metas";
-import { CreateMetas } from "@/components/createMetas/CreateMetas";
+import { Releases } from "@/components/releases/Releases";
+import { Goal } from "@/components/goal/Goal";
+import { CreateGoal } from "@/components/createGoal/CreateGoal";
 import type { MetaCard } from "@/types";
+
 
 interface DashboardClientProps {
   metasIniciais: MetaCard[];
@@ -20,16 +21,16 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
   const { selected, setSelected } = useNav();
 
   const {
-    meta,
+    goal,
     metaCard,
-    selecionarMeta,
-    lancamentos,
-    definirMeta,
-    adicionarLancamento,
-    removerLancamento,
-    resetar,
+    handleSelectRelease,
+    releases,
+    handleCreateGoal,
+    handleAddRelease,
+    handleDeleteRelease,
+    reset,
     loading,
-    deletarMeta,
+    handleDeleteGoal,
   } = useMeta(metasIniciais);
 
   return (
@@ -41,19 +42,19 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
           {selected === "metas" && (
             <>
               {metaCard.length === 0 ? (
-                <CreateMetas onSubmit={definirMeta} />
+                <CreateGoal onSubmit={handleCreateGoal} />
               ) : (
-                <Metas
+                <Goal
                   metas={metaCard}
                   loading={loading}
-                  onVerMeta={(metaSelecionada) => {
-                    selecionarMeta(metaSelecionada);
+                  onViewGoal={(metaSelecionada) => {
+                    handleSelectRelease(metaSelecionada);
                     setSelected("dashboard");
                   }}
-                  onDeletarMeta={deletarMeta}
-                  onNovaMeta={() => {
+                  onDeleteGoal={handleDeleteGoal}
+                  onNewGoal={() => {
                     setSelected("dashboard");
-                    resetar();
+                    reset();
                   }}
                 />
               )}
@@ -62,16 +63,16 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
 
           {selected === "dashboard" && (
             <>
-              {!meta ? (
-                <CreateMetas onSubmit={definirMeta} />
+              {!goal ? (
+                <CreateGoal onSubmit={handleCreateGoal} />
               ) : (
                 <>
                   {/* Header */}
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-xs text-zinc-400 uppercase tracking-widest mb-1">
-                        {LABELS_TIPO[meta.tipoTrabalho]} · {MESES[meta.mes - 1]}{" "}
-                        {meta.ano}
+                        {LABELS_TYPE[goal.tipoTrabalho]} · {MONTHS[goal.mes - 1]}{" "}
+                        {goal.ano}
                       </p>
 
                       <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
@@ -92,7 +93,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
                       </button>
 
                       <button
-                        onClick={resetar}
+                        onClick={reset}
                         className="cursor-pointer flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2"
                       >
                         <i className="ti ti-refresh text-[14px]" aria-hidden />
@@ -101,7 +102,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
                     </div>
                   </div>
 
-                  {meta.resumo && <ResumoCards resumo={meta.resumo} />}
+                  {goal.resumo && <SummaryCards resumo={goal.resumo} />}
 
                   <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 ">
                     <div className="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
@@ -113,12 +114,12 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
                         Registrar hoje
                       </h2>
 
-                      <FormLancamento
-                        metaId={meta.id}
-                        metaDiaria={meta.metaDiaria}
-                        onSubmit={adicionarLancamento}
-                        diasTrabalhados={lancamentos.length}
-                        diasTotal={meta.diasRestantes ?? meta.diasTrabalhados}
+                      <FormRelease
+                        metaId={goal.id}
+                        metaDiaria={goal.metaDiaria}
+                        onSubmit={handleAddRelease}
+                        diasTrabalhados={releases.length}
+                        diasTotal={goal.diasRestantes ?? goal.diasTrabalhados}
                       />
                     </div>
 
@@ -132,18 +133,18 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
                           Histórico de dias
                         </h2>
 
-                        {lancamentos.length > 0 && (
+                        {releases.length > 0 && (
                           <span className="text-xs text-zinc-400">
-                            {lancamentos.filter((l) => l.bateuMeta).length} de{" "}
-                            {lancamentos.length} acima da meta
+                            {releases.filter((l) => l.bateuMeta).length} de{" "}
+                            {releases.length} acima da meta
                           </span>
                         )}
                       </div>
 
-                      <Listalancamentos
-                        lancamentos={lancamentos}
-                        metaDiaria={meta.metaDiaria}
-                        onRemover={removerLancamento}
+                      <ListRelease
+                        releases={releases}
+                        dailyGoal={goal.metaDiaria}
+                        onDelete={handleDeleteRelease}
                       />
                     </div>
                   </div>
@@ -152,7 +153,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
             </>
           )}
 
-          {selected === "lancamentos" && <Lancamentos />}
+          {selected === "lancamentos" && <Releases />}
         </div>
       </main>
     </div>

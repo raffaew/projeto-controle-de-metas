@@ -4,7 +4,7 @@ import { useNav } from "@/context/navContex";
 import type { NavPage } from "@/types/index";
 import { cn } from "@/lib/cn";
 import { useState } from "react";
-import { useMeta } from "@/hooks/useMeta";
+import { useMeta } from "@/hooks/useGoal";
 
 const NAV: { id: NavPage; icon: string; label: string }[] = [
   { id: "dashboard", icon: "layout-dashboard", label: "Dashboard" },
@@ -17,7 +17,7 @@ export function Sidebar() {
   const { selected, setSelected } = useNav();
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const { getGoals } = useMeta();
+  const { handleGetUserGoal } = useMeta();
 
   return (
     <>
@@ -96,7 +96,7 @@ export function Sidebar() {
                   if (item.id === "metas") {
                     setSelected(item.id as NavPage);
                     setIsOpen(false);
-                     getGoals(session?.backendToken!);
+                     handleGetUserGoal(session?.backendToken!);
                   }
                 }}
                 className={cn(

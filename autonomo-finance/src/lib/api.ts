@@ -10,10 +10,10 @@ export async function createToken(data: User) {
     body: JSON.stringify(data),
   });
 
-    if (!res.ok) {
-    const errorBody = await res.json().catch(() => ({}))
-    console.error('Erro createUser:', res.status, errorBody)
-    throw new Error(`Erro ao criar usuário: ${res.status}`)
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    console.error("Erro createUser:", res.status, errorBody);
+    throw new Error(`Erro ao criar usuário: ${res.status}`);
   }
 
   return res.json();

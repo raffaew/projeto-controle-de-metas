@@ -1,11 +1,11 @@
-import { FormMeta } from "@/components/formMetas/FormMeta";
+import { FormMeta } from "@/components/formGoal/FormGoal";
 import type { Meta } from "@/types";
 
 interface CreateMetaProps {
   onSubmit: (meta: Meta) => void;
 }
 
-export function CreateMetas({
+export function CreateGoal({
   onSubmit,
 }: CreateMetaProps) {
   return (

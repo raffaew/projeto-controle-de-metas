@@ -1,4 +1,4 @@
-import type { Lancamento, Meta, ResumoMeta, CategoriaGasto, TipoTrabalho } from '@/types'
+import type { CategoriaGasto, TipoTrabalho } from '@/types'
 
 
 
@@ -17,18 +17,18 @@ export function formatPercent(value: number): string {
 }
 
 
-export function calcularMetaDiaria(valorMeta: number, diasTrabalho: number): number {
+export function calculateDailyGoal(valorMeta: number, diasTrabalho: number): number {
   if (diasTrabalho === 0) return 0
   return valorMeta / diasTrabalho
 }
 
-export function calcularLucro(bruto: number, totalGastos: number): number {
+export function calculateProfit(bruto: number, totalGastos: number): number {
   return bruto - totalGastos
 }
 
 
 
-export const LABELS_TIPO: Record<TipoTrabalho, string> = {
+export const LABELS_TYPE: Record<TipoTrabalho, string> = {
   motorista:  'Motorista',
   entregador: 'Entregador',
   vendedor:   'Vendedor',
@@ -37,7 +37,7 @@ export const LABELS_TIPO: Record<TipoTrabalho, string> = {
   outro:      'Outro',
 }
 
-export const LABELS_CATEGORIA: Record<CategoriaGasto, string> = {
+export const LABELS_CATEGORIES: Record<CategoriaGasto, string> = {
   combustivel: 'Combustível',
   alimentacao: 'Alimentação',
   manutencao:  'Manutenção',
@@ -45,7 +45,7 @@ export const LABELS_CATEGORIA: Record<CategoriaGasto, string> = {
   outros:      'Outros',
 }
 
-export const ICONES_CATEGORIA: Record<CategoriaGasto, string> = {
+export const ICONS_CATEGORIES: Record<CategoriaGasto, string> = {
   combustivel: 'gas-station',
   alimentacao: 'bowl-spoon',
   manutencao:  'tool',
@@ -53,20 +53,20 @@ export const ICONES_CATEGORIA: Record<CategoriaGasto, string> = {
   outros:      'dots-horizontal',
 }
 
-export const MESES = [
+export const MONTHS = [
   'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
 ]
 
 
-export function statusDia(lucro: number, metaDiaria: number) {
+export function dayStatus(lucro: number, metaDiaria: number) {
   if (lucro >= metaDiaria * 1.2) return { label: 'Acima ↑', color: 'success' }
   if (lucro >= metaDiaria)        return { label: 'Meta ✓',  color: 'success' }
   if (lucro >= metaDiaria * 0.8)  return { label: 'Quase',   color: 'warning' }
   return                                 { label: 'Abaixo',  color: 'danger'  }
 }
 
-export function statusMeta(pct: number) {
+export function statusGoal(pct: number) {
   if (pct >= 100) return { label: 'Concluída!', color: 'success' }
   if (pct >= 60)  return { label: 'No caminho', color: 'info'    }
   if (pct >= 30)  return { label: 'Atenção',    color: 'warning' }

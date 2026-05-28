@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { LancamentoForm, GastoForm, CategoriaGasto } from '@/types'
-import { LABELS_CATEGORIA, formatBRL, calcularLucro } from '@/lib/utils'
+import { LABELS_CATEGORIES, formatBRL, calculateProfit } from '@/lib/utils'
 import { cn } from '@/lib/cn'
 
 const CATEGORIAS: CategoriaGasto[] = [
@@ -17,7 +17,7 @@ interface FormLancamentoProps {
   diasTotal: number
 }
 
-export function FormLancamento({
+export function FormRelease({
   metaId,
   metaDiaria,
   onSubmit,
@@ -31,7 +31,7 @@ export function FormLancamento({
   const [erro, setErro] = useState('')
 
   const totalGastos = gastos.reduce((s, g) => s + (Number(g.valor) || 0), 0)
-  const lucro       = calcularLucro(Number(bruto) || 0, totalGastos)
+  const lucro       = calculateProfit(Number(bruto) || 0, totalGastos)
   const bateuMeta   = lucro >= metaDiaria
   const temBruto    = Number(bruto) > 0
 
@@ -113,7 +113,7 @@ export function FormLancamento({
                 className="flex-1 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
               >
                 {CATEGORIAS.map(c => (
-                  <option key={c} value={c}>{LABELS_CATEGORIA[c]}</option>
+                  <option key={c} value={c}>{LABELS_CATEGORIES[c]}</option>
                 ))}
               </select>
               <div className="relative w-28">

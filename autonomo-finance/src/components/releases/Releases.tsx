@@ -1,4 +1,4 @@
-export function Lancamentos(){
+export function Releases(){
     return (
         <div>
             <h1>Lançamentos</h1>

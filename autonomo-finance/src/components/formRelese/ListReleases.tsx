@@ -1,15 +1,15 @@
 import type { Lancamento } from '@/types'
-import { formatBRL, LABELS_CATEGORIA } from '@/lib/utils'
+import { formatBRL, LABELS_CATEGORIES } from '@/lib/utils'
 import { Badge } from '@/components/ui/Badge'
 
-interface ListalancamentosProps {
-  lancamentos: Lancamento[]
-  metaDiaria: number
-  onRemover?: (id: string) => void
+interface ListReleaseProps {
+  releases: Lancamento[]
+  dailyGoal: number
+  onDelete?: (id: string) => void
 }
 
-export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: ListalancamentosProps) {
-  if (lancamentos.length === 0) {
+export function ListRelease({ releases, dailyGoal, onDelete }: ListReleaseProps) {
+  if (releases.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-zinc-400">
         <i className="ti ti-calendar-off text-[32px] mb-3" aria-hidden />
@@ -21,8 +21,8 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
 
   return (
     <div className="space-y-2">
-      {[...lancamentos].reverse().map(l => {
-        const superou = (l.lucro ?? 0) > metaDiaria;
+      {[...releases].reverse().map(l => {
+        const superou = (l.lucro ?? 0) > dailyGoal;
 
         return (
           <div
@@ -59,7 +59,7 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
                       key={g.id}
                       className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400"
                     >
-                      {LABELS_CATEGORIA[g.categoria]}: {formatBRL(g.valor)}
+                      {LABELS_CATEGORIES[g.categoria]}: {formatBRL(g.valor)}
                     </span>
                   ))}
                 </div>
@@ -72,9 +72,9 @@ export function Listalancamentos({ lancamentos, metaDiaria, onRemover }: Listala
             </div>
 
             {/* Remover */}
-            {onRemover && (
+            {onDelete && (
               <button
-                onClick={() => onRemover(l.id!)}
+                onClick={() => onDelete(l.id!)}
                 className="opacity-0 group-hover:opacity-100 text-zinc-300 hover:text-red-500 transition-all p-1 shrink-0 cursor-pointer"
                 aria-label={`Remover dia ${l.diaNumero}`}
               >
