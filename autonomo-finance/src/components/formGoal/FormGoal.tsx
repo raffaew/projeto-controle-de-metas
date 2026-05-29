@@ -15,7 +15,7 @@ const ICONES_TIPO: Record<TipoTrabalho, string> = {
   motorista:  'car',
   entregador: 'bike',
   vendedor:   'shopping-bag',
-  freelancer: 'laptop',
+  freelancer: 'device-laptop',
   prestador:  'tool',
   outro:      'briefcase',
 }

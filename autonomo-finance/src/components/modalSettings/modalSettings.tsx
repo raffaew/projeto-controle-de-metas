@@ -79,7 +79,7 @@ export function ModalSettings({
                 className="rounded-lg p-2 text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
                 aria-label="Fechar modal"
               >
-                <i className="ti ti-x text-lg" aria-hidden />
+                <i className="cursor-pointer ti ti-x text-lg" aria-hidden />
               </button>
             </div>
 
@@ -98,7 +98,7 @@ export function ModalSettings({
                   className="flex h-10 w-10 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 text-red-400 transition hover:bg-red-500/20"
                   aria-label="Deletar conta"
                 >
-                  <i className="ti ti-trash text-lg" aria-hidden />
+                  <i className="cursor-pointer ti ti-trash text-lg" aria-hidden />
                 </button>
               </div>
             </div>
@@ -115,6 +115,7 @@ export function ModalSettings({
               <h1 className="text-xl font-semibold text-white">
                 Deletar conta
               </h1>
+              
               <p className="mt-2 text-sm leading-relaxed text-zinc-400">
                 Ao deletar sua conta, todas as metas, lançamentos e dados
                 associados serão excluídos permanentemente.
@@ -143,20 +144,17 @@ export function ModalSettings({
                   setError('')
                 }}
                 disabled={loading}
-                className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800 disabled:opacity-50"
+                className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800 disabled:opacity-50"
               >
                 Voltar
               </button>
 
               <button
                 onClick={handleDelete}
-                disabled={loading}
-                className="flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600 disabled:opacity-50"
+            
+                className="cursor-pointer flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600 disabled:opacity-50"
               >
-                {loading && (
-                  <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                )}
-                {loading ? 'Deletando...' : 'Deletar conta'}
+                Deletar conta
               </button>
             </div>
           </>
