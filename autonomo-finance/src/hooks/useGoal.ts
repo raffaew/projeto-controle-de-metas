@@ -8,6 +8,7 @@ import {
   getUserGoals,
   deleteGoal,
   deleteRelease,
+  deleteUser,
 } from "@/lib/api";
 import { useSession } from "next-auth/react";
 
@@ -28,22 +29,18 @@ export function useMeta(initialGoals: MetaCard[] = []) {
     }
   }, [session?.backendToken]);
 
-
-  const handleGetUserGoal = useCallback(
-    async (token: string) => {
-      try {
-        setLoading(true);
-        const goals: MetaCard[] = await getUserGoals(token);
-        setGoalCard(goals);
-        return goals;
-      } catch (error) {
-        console.error("erro ao buscar metas:", error);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [],
-  );
+  const handleGetUserGoal = useCallback(async (token: string) => {
+    try {
+      setLoading(true);
+      const goals: MetaCard[] = await getUserGoals(token);
+      setGoalCard(goals);
+      return goals;
+    } catch (error) {
+      console.error("erro ao buscar metas:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const handleCreateGoal = useCallback(
     async (novaMeta: Meta) => {
@@ -61,6 +58,21 @@ export function useMeta(initialGoals: MetaCard[] = []) {
       }
     },
     [session?.backendToken, handleGetUserGoal],
+  );
+
+  const handleDeleteUser = useCallback(
+    async (id: string) => {
+      try {
+        const res = await deleteUser(id, session?.backendToken || "");
+        console.log(res);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
+        throw error;
+      }
+    },
+    [session?.backendToken],
   );
 
   const handleSelectRelease = useCallback((metaSelecionada: MetaCard) => {
@@ -106,8 +118,9 @@ export function useMeta(initialGoals: MetaCard[] = []) {
         );
         setRelease((prev) => [...prev, release]);
 
-
-        const goalsAtualizados = await handleGetUserGoal(session?.backendToken!);
+        const goalsAtualizados = await handleGetUserGoal(
+          session?.backendToken!,
+        );
         if (goalsAtualizados) {
           const metaAtualizada = goalsAtualizados.find((m) => m.id === goal.id);
           if (metaAtualizada) setGoal(metaAtualizada);
@@ -128,8 +141,9 @@ export function useMeta(initialGoals: MetaCard[] = []) {
         await deleteRelease(id, session?.backendToken || "");
         setRelease((prev) => prev.filter((l) => l.id !== id));
 
-  
-        const goalsAtualizados = await handleGetUserGoal(session?.backendToken!);
+        const goalsAtualizados = await handleGetUserGoal(
+          session?.backendToken!,
+        );
         if (goalsAtualizados) {
           const metaAtualizada = goalsAtualizados.find(
             (m) => m.id === goal?.id,
@@ -137,7 +151,7 @@ export function useMeta(initialGoals: MetaCard[] = []) {
           if (metaAtualizada) setGoal(metaAtualizada);
         }
       } catch (error) {
-        console.error("erro handleDeleteRelease:", error);
+        console.error("erro: ", error);
       } finally {
         setLoading(false);
       }
@@ -164,5 +178,6 @@ export function useMeta(initialGoals: MetaCard[] = []) {
     handleSelectRelease,
     handleDeleteGoal,
     handleGetUserGoal,
+    handleDeleteUser,
   };
 }

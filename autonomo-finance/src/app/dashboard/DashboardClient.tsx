@@ -10,8 +10,9 @@ import { useNav } from "@/context/navContex";
 import { Releases } from "@/components/releases/Releases";
 import { Goal } from "@/components/goal/Goal";
 import { CreateGoal } from "@/components/createGoal/CreateGoal";
+import { ModalSettings } from "@/components/modalSettings/modalSettings";
 import type { MetaCard } from "@/types";
-
+import { useState } from "react";
 
 interface DashboardClientProps {
   metasIniciais: MetaCard[];
@@ -19,6 +20,7 @@ interface DashboardClientProps {
 
 export function DashboardClient({ metasIniciais }: DashboardClientProps) {
   const { selected, setSelected } = useNav();
+  const [openModal, setOpenModal] = useState(false);
 
   const {
     goal,
@@ -35,7 +37,9 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
 
   return (
     <div className=" bg-zinc-50 dark:bg-zinc-950">
-      <Sidebar />
+      
+      <Sidebar setOpenModal={setOpenModal} />
+      <ModalSettings openModal={openModal} setOpenModal={setOpenModal} />
 
       <main className="md:ml-60 min-h-screen p-6 flex flex-col">
         <div className="mt-6 flex-1 w-full max-w-7xl mx-auto space-y-6">
@@ -71,8 +75,8 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-xs text-zinc-400 uppercase tracking-widest mb-1">
-                        {LABELS_TYPE[goal.tipoTrabalho]} · {MONTHS[goal.mes - 1]}{" "}
-                        {goal.ano}
+                        {LABELS_TYPE[goal.tipoTrabalho]} ·{" "}
+                        {MONTHS[goal.mes - 1]} {goal.ano}
                       </p>
 
                       <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">

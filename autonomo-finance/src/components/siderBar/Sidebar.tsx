@@ -13,10 +13,15 @@ const NAV: { id: NavPage; icon: string; label: string }[] = [
   // { id: 'relatorios',  icon: 'chart-bar',         label: 'Relatórios'  },
 ];
 
-export function Sidebar() {
+export function Sidebar({
+  setOpenModal,
+}: {
+  setOpenModal: (value: boolean) => void;
+}) {
   const { selected, setSelected } = useNav();
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+
   const { handleGetUserGoal } = useMeta();
 
   return (
@@ -49,7 +54,6 @@ export function Sidebar() {
         />
       )}
 
-
       <aside
         className={`
           fixed
@@ -73,12 +77,10 @@ export function Sidebar() {
           md:translate-x-0
         `}
       >
-
         <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-800">
           <span className="font-semibold text-base tracking-tight text-zinc-900 dark:text-zinc-100">
             <span className="text-emerald-500">●</span> AutoFinance
           </span>
-
 
           <button onClick={() => setIsOpen(false)} className="md:hidden">
             <i className="ti ti-x text-xl" />
@@ -96,7 +98,7 @@ export function Sidebar() {
                   if (item.id === "metas") {
                     setSelected(item.id as NavPage);
                     setIsOpen(false);
-                     handleGetUserGoal(session?.backendToken!);
+                    handleGetUserGoal(session?.backendToken!);
                   }
                 }}
                 className={cn(
@@ -137,6 +139,12 @@ export function Sidebar() {
                   {session.user.email}
                 </p>
               </div>
+
+              <button 
+              onClick={() => setOpenModal(true)}
+              className="text-zinc-400 hover:text-red-500 transition-colors p-1 shrink-0 cursor-pointer">
+                <i className="ti ti-settings text-[16px]" />
+              </button>
 
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}

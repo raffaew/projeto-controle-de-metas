@@ -19,6 +19,10 @@ export class UserService {
     return { user, token };
   }
 
+  async deleteUser (userId: string) {
+    await prisma.user.delete({ where: { id: userId}})
+  }
+
   async getAllUsers() {
     const users = await prisma.user.findMany({
       include: {

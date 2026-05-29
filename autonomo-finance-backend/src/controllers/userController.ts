@@ -18,6 +18,17 @@ export class UserController {
     }
   }
 
+  async deleteUser(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+      await userService.deleteUser( userId as string);
+      return res.status(200).json( { message: "Usuário deletado com sucesso"});
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json( {error: "Erro ao excluir usuário"});
+    }
+  }
+
   async getAllUsers(req: Request, res: Response) {
     try {
       const users = await userService.getAllUsers();

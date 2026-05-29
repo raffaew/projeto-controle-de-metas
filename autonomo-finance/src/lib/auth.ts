@@ -35,12 +35,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.backendToken = user.backendToken
+        token.userId = user.userId
       }
       return token
     },
 
     async session({ session, token }) {
       session.backendToken = token.backendToken as string
+      session.userId = token.userId as string
       return session
     },
   },

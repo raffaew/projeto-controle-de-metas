@@ -19,6 +19,22 @@ export async function createToken(data: User) {
   return res.json();
 }
 
+export async function deleteUser(userId: string, token: string) {
+  const res = await fetch(`${apiURL}/user/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data);
+  }
+
+  return res.json();
+}
+
 export async function createGoal(data: Meta, token: string) {
   const res = await fetch(`${apiURL}/meta`, {
     method: "POST",

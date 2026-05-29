@@ -13,6 +13,8 @@ const releasesController = new ReleasesController();
 
 router.post("/user", userController.addUser);
 
+router.delete("/user/:userId", authMiddleware, userController.deleteUser);
+
 router.get("/users", authMiddleware, userController.getAllUsers);
 
 router.get("/user/metas", authMiddleware, goalController.getUserGoals);
