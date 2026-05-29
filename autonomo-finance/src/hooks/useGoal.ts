@@ -28,13 +28,6 @@ export function useMeta(initialGoals: MetaCard[] = []) {
     }
   }, [session?.backendToken]);
 
-  
- if(!goal) { 
-  console.log("Nao tem");
- } else { 
-  console.log("tem");
- }
-
 
   const handleGetUserGoal = useCallback(
     async (token: string) => {

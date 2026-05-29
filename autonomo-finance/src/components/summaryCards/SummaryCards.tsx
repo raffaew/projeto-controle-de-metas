@@ -18,6 +18,7 @@ export function SummaryCards({ resumo }: ResumoCardsProps) {
     metaDiariaAtualizada,
     projecaoFinal,
     totalBruto,
+    totalDiasMeta
   } = resumo
 
   const status = statusGoal(percentualConcluido)
@@ -42,7 +43,7 @@ export function SummaryCards({ resumo }: ResumoCardsProps) {
         <MetricCard
           label="Dias trabalhados"
           value={String(diasTrabalhados)}
-          sub={`de ${diasRestantes} dias`}
+          sub={`de ${totalDiasMeta} dias`}
           icon="calendar-check"
         />
         <MetricCard

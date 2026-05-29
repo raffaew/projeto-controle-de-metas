@@ -85,6 +85,7 @@ export interface ResumoMeta {
   mediaLucroDia: number; // média real até hoje
   metaDiariaAtualizada: number; // recalculada com dias restantes
   projecaoFinal: number; // se manter a média atual
+  totalDiasMeta: number
 }
 
 export interface DiaHistorico {

@@ -87,6 +87,8 @@ export class GoalService {
 
       const projecaoFinal = mediaLucroDia * meta.diasTrabalho;
 
+      const totalDiasMeta = meta.diasTrabalho
+
       return {
         ...meta,
         resumo: {
@@ -101,6 +103,8 @@ export class GoalService {
           mediaLucroDia,
           metaDiariaAtualizada,
           projecaoFinal,
+          totalDiasMeta,
+          
         },
       };
     });

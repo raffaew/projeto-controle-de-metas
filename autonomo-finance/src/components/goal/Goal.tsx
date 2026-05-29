@@ -98,7 +98,7 @@ function GoalCardItem({
 
             <span className="text-zinc-500 font-normal">
               {" "}
-              de {meta.resumo.diasRestantes}
+              de {meta.resumo.totalDiasMeta}
             </span>
           </p>
         </div>
