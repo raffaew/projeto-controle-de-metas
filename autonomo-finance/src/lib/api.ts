@@ -1,5 +1,5 @@
 const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333/api";
-import { User, Meta, Lancamento } from "@/types/index";
+import { User, Meta, Lancamento, DeleteReleaseResponse } from "@/types/index";
 
 export async function createToken(data: User) {
   const res = await fetch(`${apiURL}/user`, {
@@ -91,7 +91,7 @@ export async function createRelease(
   return res.json();
 }
 
-export async function deleteRelease(lancamentoId: string, token: string) {
+export async function deleteRelease(lancamentoId: string, token: string): Promise<DeleteReleaseResponse> {
   const res = await fetch(`${apiURL}/lancamento/${lancamentoId}`, {
     method: "DELETE",
     headers: {

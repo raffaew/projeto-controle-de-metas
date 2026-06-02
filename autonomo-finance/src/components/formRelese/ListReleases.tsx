@@ -28,8 +28,6 @@ export function ListRelease({
     );
   }
 
-  //console.log("render");
-
   return (
     <div className="space-y-2">
       {loading && (

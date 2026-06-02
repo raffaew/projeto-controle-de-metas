@@ -83,7 +83,7 @@ export interface ResumoMeta {
   meta: Meta;
   lucroAcumulado: number;
   totalGastos: number;
-  totalBruto: number;
+  //totalBruto: number;
   faltaParaMeta: number;
   diasTrabalhados: number;
   diasRestantes: number;

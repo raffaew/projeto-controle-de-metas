@@ -22,10 +22,10 @@ export class ReleasesController {
   async deleteRelease(req: Request, res: Response) {
     try {
       const { lancamentoId } = req.params;
-      await releasesService.deleteRelease(lancamentoId as string);
+      const goal = await releasesService.deleteRelease(lancamentoId as string);
       return res
         .status(200)
-        .json({ message: "Lançamento excluído com sucesso" });
+        .json({ message: "Lançamento excluído com sucesso", goal });
     } catch (error) {
       return res.status(500).json({ error: "Erro ao excluir lançamento" });
     }

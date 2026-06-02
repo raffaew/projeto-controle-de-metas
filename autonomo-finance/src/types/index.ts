@@ -76,15 +76,15 @@ export interface GastoForm {
 export interface ResumoMeta {
   id?: string;
   lucroAcumulado: number;
-  totalGastos: number;
-  totalBruto: number;
   faltaParaMeta: number;
   diasTrabalhados: number;
   diasRestantes: number;
   percentualConcluido: number; // 0–100
-  mediaLucroDia: number; // média real até hoje
   metaDiariaAtualizada: number; // recalculada com dias restantes
   projecaoFinal: number; // se manter a média atual
+  //mediaLucroDia: number; // média real até hoje
+  totalGastos: number;
+  totalBruto: number;
   totalDiasMeta: number
 }
 
@@ -110,6 +110,11 @@ export interface RelatorioMensal {
 export interface ApiResponse<T> {
   data?: T;
   error?: string;
+}
+
+export interface DeleteReleaseResponse {
+  message: string;
+  goal: MetaCard;
 }
 
 export interface PaginatedResponse<T> {

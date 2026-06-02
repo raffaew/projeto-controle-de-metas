@@ -35,8 +35,6 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
     handleDeleteGoal,
   } = useMeta(metasIniciais);
 
-  console.log("render");
-
   return (
     <div className=" bg-zinc-50 dark:bg-zinc-950">
       
