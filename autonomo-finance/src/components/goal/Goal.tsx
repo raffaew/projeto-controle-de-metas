@@ -33,7 +33,8 @@ function GoalCardItem({
   const status = getStatus(meta.resumo.percentualConcluido);
 
   return (
-    <div className="
+    <div
+      className="
       bg-white dark:bg-zinc-900
       border border-zinc-200 dark:border-zinc-800
       rounded-2xl
@@ -41,7 +42,8 @@ function GoalCardItem({
       flex flex-col gap-4
       hover:border-zinc-300 dark:hover:border-zinc-700
       transition-colors
-    ">
+    "
+    >
       {/* Cabeçalho */}
       <div className="flex items-start justify-between">
         <div>
@@ -52,9 +54,7 @@ function GoalCardItem({
           <p className="text-base font-medium text-zinc-900 dark:text-zinc-100">
             {formatBRL(meta.valorMeta)}
 
-            <span className="text-sm font-normal text-zinc-500 ml-1">
-              meta
-            </span>
+            <span className="text-sm font-normal text-zinc-500 ml-1">meta</span>
           </p>
         </div>
 
@@ -69,9 +69,7 @@ function GoalCardItem({
 
       <div className="grid grid-cols-2 gap-2">
         <div className="bg-zinc-50 dark:bg-zinc-800/60 rounded-xl p-3">
-          <p className="text-xs text-zinc-500 mb-0.5">
-            Lucro acumulado
-          </p>
+          <p className="text-xs text-zinc-500 mb-0.5">Lucro acumulado</p>
 
           <p className="text-sm font-medium text-emerald-500 dark:text-emerald-400">
             {formatBRL(meta.resumo.lucroAcumulado)}
@@ -79,9 +77,7 @@ function GoalCardItem({
         </div>
 
         <div className="bg-zinc-50 dark:bg-zinc-800/60 rounded-xl p-3">
-          <p className="text-xs text-zinc-500 mb-0.5">
-            Falta para meta
-          </p>
+          <p className="text-xs text-zinc-500 mb-0.5">Falta para meta</p>
 
           <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
             {formatBRL(meta.resumo.faltaParaMeta)}
@@ -89,13 +85,10 @@ function GoalCardItem({
         </div>
 
         <div className="bg-zinc-50 dark:bg-zinc-800/60 rounded-xl p-3">
-          <p className="text-xs text-zinc-500 mb-0.5">
-            Dias trabalhados
-          </p>
+          <p className="text-xs text-zinc-500 mb-0.5">Dias trabalhados</p>
 
           <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-            {meta.resumo.diasTrabalhados}
-
+            {meta.resumo.diasTrabalhados} {" "}
             <span className="text-zinc-500 font-normal">
               de {meta.resumo.totalDiasMeta}
             </span>
@@ -103,9 +96,7 @@ function GoalCardItem({
         </div>
 
         <div className="bg-zinc-50 dark:bg-zinc-800/60 rounded-xl p-3">
-          <p className="text-xs text-zinc-500 mb-0.5">
-            Meta diária
-          </p>
+          <p className="text-xs text-zinc-500 mb-0.5">Meta diária</p>
 
           <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
             {formatBRL(meta.resumo.metaDiariaAtualizada)}

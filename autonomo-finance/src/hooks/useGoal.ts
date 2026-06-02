@@ -18,7 +18,10 @@ export function useMeta(initialGoals: MetaCard[] = []) {
   const [releases, setRelease] = useState<Lancamento[]>(
     initialGoals[0]?.lancamentos || [],
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({
+    goal: false,
+    releases: false,
+  });
   const [error, setError] = useState<string | null>(null);
 
   const { data: session } = useSession();
@@ -31,21 +34,21 @@ export function useMeta(initialGoals: MetaCard[] = []) {
 
   const handleGetUserGoal = useCallback(async (token: string) => {
     try {
-      setLoading(true);
+      setLoading((prev) => ({ ...prev, goal: true }));
       const goals: MetaCard[] = await getUserGoals(token);
       setGoalCard(goals);
       return goals;
     } catch (error) {
       console.error("erro ao buscar metas:", error);
     } finally {
-      setLoading(false);
+      setLoading((prev) => ({ ...prev, goal: false }));
     }
   }, []);
 
   const handleCreateGoal = useCallback(
     async (novaMeta: Meta) => {
       try {
-        setLoading(true);
+        setLoading((prev) => ({ ...prev, goal: true }));
         const goal = await createGoal(novaMeta, session?.backendToken || "");
         setGoal(goal);
         setRelease([]);
@@ -54,7 +57,7 @@ export function useMeta(initialGoals: MetaCard[] = []) {
         setError(error as string);
         console.error("erro definirMeta:", error);
       } finally {
-        setLoading(false);
+        setLoading((prev) => ({ ...prev, goal: false }));
       }
     },
     [session?.backendToken, handleGetUserGoal],
@@ -83,7 +86,7 @@ export function useMeta(initialGoals: MetaCard[] = []) {
   const handleDeleteGoal = useCallback(
     async (metaId: string) => {
       try {
-        setLoading(true);
+        setLoading((prev) => ({ ...prev, deleteGoal: true }));
         await deleteGoal(metaId, session?.backendToken || "");
         setGoalCard((prev) => prev.filter((m) => m.id !== metaId));
 
@@ -95,7 +98,7 @@ export function useMeta(initialGoals: MetaCard[] = []) {
         setError("Erro ao deletar meta");
         console.error("erro handleDeleteGoal:", error);
       } finally {
-        setLoading(false);
+        setLoading((prev) => ({ ...prev, deleteGoal: false }));
       }
     },
     [session?.backendToken, goal?.id],
@@ -105,7 +108,8 @@ export function useMeta(initialGoals: MetaCard[] = []) {
     async (form: LancamentoForm) => {
       if (!goal) return;
       try {
-        setLoading(true);
+        setLoading((prev) => ({ ...prev, releases: true }));
+
         const novo: Lancamento = {
           valorBruto: form.valorBruto,
           gastos: form.gastos.map((g) => ({ ...g })),
@@ -116,8 +120,10 @@ export function useMeta(initialGoals: MetaCard[] = []) {
           goal.id,
           session?.backendToken!,
         );
-        setRelease((prev) => [...prev, release]);
 
+        setLoading((prev) => ({ ...prev, releases: false }));
+
+        setRelease((prev) => [...prev, release]);
         const goalsAtualizados = await handleGetUserGoal(
           session?.backendToken!,
         );
@@ -127,8 +133,7 @@ export function useMeta(initialGoals: MetaCard[] = []) {
         }
       } catch (error) {
         console.error("erro handleAddRelease:", error);
-      } finally {
-        setLoading(false);
+        setLoading((prev) => ({ ...prev, releases: false }));
       }
     },
     [session?.backendToken, goal?.id],
@@ -137,10 +142,10 @@ export function useMeta(initialGoals: MetaCard[] = []) {
   const handleDeleteRelease = useCallback(
     async (id: string) => {
       try {
-        setLoading(true);
+        setLoading((prev) => ({ ...prev, releases: true }));
         await deleteRelease(id, session?.backendToken || "");
         setRelease((prev) => prev.filter((l) => l.id !== id));
-
+        setLoading((prev) => ({ ...prev, releases: false }));
         const goalsAtualizados = await handleGetUserGoal(
           session?.backendToken!,
         );
@@ -152,9 +157,7 @@ export function useMeta(initialGoals: MetaCard[] = []) {
         }
       } catch (error) {
         console.error("erro: ", error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     },
     [goal?.id, session?.backendToken, handleGetUserGoal],
   );

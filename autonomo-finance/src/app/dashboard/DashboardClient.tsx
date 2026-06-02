@@ -35,6 +35,8 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
     handleDeleteGoal,
   } = useMeta(metasIniciais);
 
+  console.log("render");
+
   return (
     <div className=" bg-zinc-50 dark:bg-zinc-950">
       
@@ -50,7 +52,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
               ) : (
                 <Goal
                   metas={metaCard}
-                  loading={loading}
+                  loading={loading.goal}
                   onViewGoal={(metaSelecionada) => {
                     handleSelectRelease(metaSelecionada);
                     setSelected("dashboard");
@@ -149,6 +151,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
                         releases={releases}
                         dailyGoal={goal.metaDiaria}
                         onDelete={handleDeleteRelease}
+                        loading={loading.releases}
                       />
                     </div>
                   </div>

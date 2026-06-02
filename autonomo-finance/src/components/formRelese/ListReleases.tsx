@@ -1,27 +1,43 @@
-import type { Lancamento } from '@/types'
-import { formatBRL, LABELS_CATEGORIES } from '@/lib/utils'
-import { Badge } from '@/components/ui/Badge'
+import type { Lancamento } from "@/types";
+import { formatBRL, LABELS_CATEGORIES } from "@/lib/utils";
+import { Badge } from "@/components/ui/Badge";
+import { useEffect } from "react";
 
 interface ListReleaseProps {
-  releases: Lancamento[]
-  dailyGoal: number
-  onDelete?: (id: string) => void
+  releases: Lancamento[];
+  dailyGoal: number;
+  onDelete?: (id: string) => void;
+  loading?: boolean;
 }
 
-export function ListRelease({ releases, dailyGoal, onDelete }: ListReleaseProps) {
+export function ListRelease({
+  releases,
+  dailyGoal,
+  onDelete,
+  loading,
+}: ListReleaseProps) {
   if (releases.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-zinc-400">
         <i className="ti ti-calendar-off text-[32px] mb-3" aria-hidden />
         <p className="text-sm">Nenhum dia registrado ainda</p>
-        <p className="text-xs mt-1">Use o formulário ao lado para registrar seu primeiro dia</p>
+        <p className="text-xs mt-1">
+          Use o formulário ao lado para registrar seu primeiro dia
+        </p>
       </div>
-    )
+    );
   }
+
+  //console.log("render");
 
   return (
     <div className="space-y-2">
-      {[...releases].reverse().map(l => {
+      {loading && (
+       <div className=" flex items-center justify-center ">
+          <div className="w-5 h-5 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+        </div>
+      )}
+      {[...releases].reverse().map((l) => {
         const superou = (l.lucro ?? 0) > dailyGoal;
 
         return (
@@ -38,23 +54,29 @@ export function ListRelease({ releases, dailyGoal, onDelete }: ListReleaseProps)
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                  Lucro: 
+                  Lucro:
                   {formatBRL(l.lucro ?? 0)}
                 </span>
-                <Badge variant={l.bateuMeta ? 'success' : superou ? 'success' : 'warning'}>
-                  {l.bateuMeta ? (superou ? '↑ Acima' : '✓ Meta') : '↓ Abaixo'}
+                <Badge
+                  variant={
+                    l.bateuMeta ? "success" : superou ? "success" : "warning"
+                  }
+                >
+                  {l.bateuMeta ? (superou ? "↑ Acima" : "✓ Meta") : "↓ Abaixo"}
                 </Badge>
               </div>
               <div className="flex items-center gap-3 text-xs text-zinc-400">
                 <span>Bruto: {formatBRL(l.valorBruto)}</span>
                 {l.totalGastos && l.totalGastos > 0 && (
-                  <span className="text-red-400">−{formatBRL(l.totalGastos)}</span>
+                  <span className="text-red-400">
+                    −{formatBRL(l.totalGastos)}
+                  </span>
                 )}
               </div>
               {/* Gastos por categoria */}
               {l.gastos.length > 0 && (
                 <div className="flex gap-1.5 mt-1.5 flex-wrap">
-                  {l.gastos.map(g => (
+                  {l.gastos.map((g) => (
                     <span
                       key={g.id}
                       className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400"
@@ -68,7 +90,12 @@ export function ListRelease({ releases, dailyGoal, onDelete }: ListReleaseProps)
 
             {/* Data */}
             <div className="text-right text-xs text-zinc-400 shrink-0 hidden sm:block">
-              {l.data ? new Date(l.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : 'Data não disponível'}
+              {l.data
+                ? new Date(l.data).toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "short",
+                  })
+                : "Data não disponível"}
             </div>
 
             {/* Remover */}
@@ -82,8 +109,8 @@ export function ListRelease({ releases, dailyGoal, onDelete }: ListReleaseProps)
               </button>
             )}
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
