@@ -12,7 +12,7 @@ export class GoalService {
   }
 
   async getUserGoals(userId: string) {
-    const metas = await prisma.meta.findMany({
+    const goals = await prisma.meta.findMany({
       where: { userId },
       include: {
         lancamentos: {
@@ -23,7 +23,7 @@ export class GoalService {
       },
     });
 
-    return metas.map((meta) => {
+    return goals.map((meta) => {
       const id = meta.id;
 
       const lucroAcumulado = meta.lancamentos.reduce(
@@ -41,31 +41,14 @@ export class GoalService {
         0,
       );
 
-      const hoje = new Date();
-      const dataInicio = new Date(meta.criadoEm);
+      const diasTrabalhados = new Set(
+        meta.lancamentos.map((l: Lancamento) => {
+          const data = new Date(l.data);
+          data.setHours(0, 0, 0, 0);
 
-      hoje.setHours(0, 0, 0, 0);
-      dataInicio.setHours(0, 0, 0, 0);
-
-      const dataFinal = new Date(dataInicio);
-      dataFinal.setDate(dataFinal.getDate() + meta.diasTrabalho);
-
-      let diasTrabalhados = Math.max(
-        0,
-        Math.floor(
-          (hoje.getTime() - dataInicio.getTime()) / (1000 * 60 * 60 * 24),
-        ),
-      );
-
-      const teveLancamentoHoje = meta.lancamentos.some((l: Lancamento) => {
-        const dataLancamento = new Date(l.data);
-        dataLancamento.setHours(0, 0, 0, 0);
-        return dataLancamento.getTime() === hoje.getTime();
-      });
-
-      if (teveLancamentoHoje) {
-        diasTrabalhados += 1;
-      }
+          return data.getTime();
+        }),
+      ).size;
 
       const diasRestantes = Math.max(0, meta.diasTrabalho - diasTrabalhados);
 
@@ -87,7 +70,7 @@ export class GoalService {
 
       const projecaoFinal = mediaLucroDia * meta.diasTrabalho;
 
-      const totalDiasMeta = meta.diasTrabalho
+      const totalDiasMeta = meta.diasTrabalho;
 
       return {
         ...meta,
@@ -104,14 +87,13 @@ export class GoalService {
           metaDiariaAtualizada,
           projecaoFinal,
           totalDiasMeta,
-          
         },
       };
     });
   }
 
   async getGoalById(metaId: string) {
-    const meta = await prisma.meta.findUnique({
+    const goal = await prisma.meta.findUnique({
       where: { id: metaId },
       include: {
         lancamentos: {
@@ -121,7 +103,7 @@ export class GoalService {
         },
       },
     });
-    return meta;
+    return goal;
   }
 
   async deleteGoal(metaId: string) {

@@ -1,7 +1,7 @@
 const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333/api";
-import { User, Meta, Lancamento, DeleteReleaseResponse } from "@/types/index";
+import { User, Meta, Lancamento, DeleteReleaseResponse, MetaCard, CreateReleaseResponse } from "@/types/index";
 
-export async function createToken(data: User) {
+export async function createToken(data: User): Promise<{ token: string, user: User }> {
   const res = await fetch(`${apiURL}/user`, {
     method: "POST",
     headers: {
@@ -19,7 +19,7 @@ export async function createToken(data: User) {
   return res.json();
 }
 
-export async function deleteUser(userId: string, token: string) {
+export async function deleteUser(userId: string, token: string): Promise<{ message: string }> {
   const res = await fetch(`${apiURL}/user/${userId}`, {
     method: "DELETE",
     headers: {
@@ -35,7 +35,7 @@ export async function deleteUser(userId: string, token: string) {
   return res.json();
 }
 
-export async function createGoal(data: Meta, token: string) {
+export async function createGoal(data: Meta, token: string): Promise<MetaCard> {
   const res = await fetch(`${apiURL}/meta`, {
     method: "POST",
     headers: {
@@ -49,7 +49,7 @@ export async function createGoal(data: Meta, token: string) {
   return res.json();
 }
 
-export async function getUserGoals(token: string) {
+export async function getUserGoals(token: string): Promise<MetaCard[]> {
   const res = await fetch(`${apiURL}/user/metas`, {
     method: "GET",
     headers: {
@@ -61,7 +61,7 @@ export async function getUserGoals(token: string) {
   return res.json();
 }
 
-export async function deleteGoal(metaId: string, token: string) {
+export async function deleteGoal(metaId: string, token: string): Promise<{ message: string }> {
   const res = await fetch(`${apiURL}/meta/${metaId}`, {
     method: "DELETE",
     headers: {
@@ -77,7 +77,7 @@ export async function createRelease(
   data: Lancamento,
   metaId: string,
   token: string,
-) {
+): Promise<CreateReleaseResponse> {
   const res = await fetch(`${apiURL}/meta/${metaId}/lancamento`, {
     method: "POST",
     headers: {
@@ -104,11 +104,12 @@ export async function deleteRelease(lancamentoId: string, token: string): Promis
   return res.json();
 }
 
-export async function getDashboard(metaId: string, token: string) {
+export async function getDashboard(metaId: string, token: string): Promise<MetaCard[]> {
   const res = await fetch(`${apiURL}/dashboard/${metaId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   if (!res.ok) throw new Error("Erro ao buscar metas");
+  return res.json();
 }

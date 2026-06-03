@@ -7,11 +7,11 @@ export class ReleasesController {
   async addReleaseToGoal(req: Request, res: Response) {
     try {
       const { metaId } = req.params;
-      const lancamento = await releasesService.addReleaseToGoal(
+      const { goal, release } = await releasesService.addReleaseToGoal(
         metaId as string,
         req.body,
       );
-      return res.status(201).json(lancamento);
+      return res.status(201).json({message: "Lançamento adicionado com sucesso", goal, release });
     } catch (error) {
       return res
         .status(500)

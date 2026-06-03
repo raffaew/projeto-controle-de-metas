@@ -39,7 +39,6 @@ export interface Meta {
 
 export interface Lancamento {
   id?: string;
-
   diaNumero?: number;
   valorBruto: number;
   gastos: Gasto[];
@@ -114,6 +113,12 @@ export interface ApiResponse<T> {
 
 export interface DeleteReleaseResponse {
   message: string;
+  goal: MetaCard;
+}
+
+export interface CreateReleaseResponse {
+  message: string;
+  release: Lancamento;
   goal: MetaCard;
 }
 
