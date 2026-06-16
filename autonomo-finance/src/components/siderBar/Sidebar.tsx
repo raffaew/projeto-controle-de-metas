@@ -98,7 +98,7 @@ export function Sidebar({
                   if (item.id === "metas") {
                     setSelected(item.id as NavPage);
                     setIsOpen(false);
-                    handleGetUserGoal(session?.backendToken!);
+                    handleGetUserGoal();
                   }
                 }}
                 className={cn(
