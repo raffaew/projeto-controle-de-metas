@@ -16,11 +16,15 @@ export class UserService {
       expiresIn: "3d",
     });
 
+    if(!token) throw new Error("Erro ao criar token");
+    if(!user) throw new Error("Erro ao criar usuário");
     return { user, token };
   }
 
   async deleteUser (userId: string) {
     await prisma.user.delete({ where: { id: userId}})
+    if(!userId) throw new Error("Erro ao deletar usuário");
+    return { message: "Usuário deletado com sucesso" };
   }
 
   async getAllUsers() {
@@ -37,6 +41,9 @@ export class UserService {
         },
       },
     });
+
+    if(!users) throw new Error("Erro ao buscar usuários");
+    
     return users;
   }
 

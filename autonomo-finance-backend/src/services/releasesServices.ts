@@ -110,6 +110,7 @@ export class ReleasesService {
 
     const goal = await this.getGoalWithSummary(metaId);
 
+    
     return {
       release,
       goal,
@@ -121,6 +122,7 @@ export class ReleasesService {
       where: { id: lancamentoId },
     });
 
+    if(!release) throw new Error("Lançamento não encontrado");
     return this.getGoalWithSummary(release.metaId);
   }
 }
