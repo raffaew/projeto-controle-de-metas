@@ -8,6 +8,7 @@ export class GoalService {
     const goal = await prisma.meta.create({
       data: { ...data, metaDiaria },
     });
+    if(!goal) throw new Error("Erro ao criar meta");
     return goal;
   }
 
@@ -103,10 +104,12 @@ export class GoalService {
         },
       },
     });
+    if(!goal) throw new Error("Meta não encontrada");
     return goal;
   }
 
   async deleteGoal(metaId: string) {
     await prisma.meta.delete({ where: { id: metaId } });
+    if(!metaId) throw new Error("Meta não encontrada");
   }
 }

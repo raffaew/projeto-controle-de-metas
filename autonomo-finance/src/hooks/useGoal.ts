@@ -19,71 +19,66 @@ export function useMeta(initialGoals: MetaCard[] = []) {
 
   const [goal, setGoal] = useState<MetaCard | null>(initialGoals[0] ?? null);
 
-  const { data: MetaCard = initialGoals, isLoading: loadingGoals } = useQuery({
+  const { data: metaCard = initialGoals, isLoading: loadingGoals } = useQuery({
     queryKey: ["metas", token],
     queryFn: () => getUserGoals(token),
     enabled: !!token,
     initialData: initialGoals.length > 0 ? initialGoals : undefined,
   });
 
-  const { mutate: handleCreateGoal, isPending: loadingCreateGoal } =
-    useMutation({
-      mutationFn: (novaMeta: Meta) => createGoal(novaMeta, token),
-      onSuccess: (res) => {
-        setGoal(res);
-        // invalida o cache → React Query rebusca getUserGoals automaticamente
-        queryClient.invalidateQueries({ queryKey: ["metas"] });
-      },
-      onError: (error: Error) =>
-        console.error("erro createGoal:", error.message),
-    });
+  const createGoalMutation = useMutation({
+    mutationFn: (novaMeta: Meta) => createGoal(novaMeta, token),
+    onSuccess: (res) => {
+      setGoal(res);
+      // invalida o cache → React Query rebusca getUserGoals automaticamente
+      queryClient.invalidateQueries({ queryKey: ["metas"] });
+    },
+    onError: (error: Error) => console.error("erro createGoal:", error.message),
+  });
 
-  const { mutate: handleDeleteGoal, isPending: loadingDeleteGoal } =
-    useMutation({
-      mutationFn: (metaId: string) => deleteGoal(metaId, token),
-      onSuccess: (_, res) => {
-        if (goal?.id === res) {
-          setGoal(null);
-        }
-        queryClient.invalidateQueries({ queryKey: ["metas"] });
-      },
-      onError: (error) => console.error("erro ao deletar meta:", error),
-    });
+  const deleteGoalMutation = useMutation({
+    mutationFn: (metaId: string) => deleteGoal(metaId, token),
+    onSuccess: (_, metaId) => {
+      if (goal?.id === metaId) {
+        setGoal(null);
+      }
+      queryClient.invalidateQueries({ queryKey: ["metas"] });
+    },
+    onError: (error) => console.error("erro ao deletar meta:", error),
+  });
 
-  const { mutate: handleAddRelease, isPending: loadingAddRelease } =
-    useMutation({
-      mutationFn: (form: LancamentoForm) =>
-        createRelease(
-          { valorBruto: form.valorBruto, gastos: form.gastos },
-          goal!.id,
-          token,
-        ),
-      onSuccess: (res) => {
-        setGoal(res.goal);
-        queryClient.invalidateQueries({ queryKey: ["metas"] });
-      },
-      onError: (error: Error) =>
-        console.error("erro ao adicionar lançamento:", error.message),
-    });
+  const addReleaseMutation = useMutation({
+    mutationFn: (form: LancamentoForm) =>
+      createRelease(
+        { valorBruto: form.valorBruto, gastos: form.gastos },
+        goal!.id,
+        token,
+      ),
+    onSuccess: (res) => {
+      setGoal(res.goal);
+      queryClient.invalidateQueries({ queryKey: ["metas"] });
+    },
+    onError: (error: Error) =>
+      console.error("erro ao adicionar lançamento:", error.message),
+  });
 
-  const { mutate: handleDeleteRelease, isPending: loadingDeleteRelease } =
-    useMutation({
-      mutationFn: (id: string) => deleteRelease(id, token),
-      onSuccess: (res) => {
-        setGoal(res.goal);
-        queryClient.invalidateQueries({ queryKey: ["metas"] });
-      },
-      onError: (error: Error) => {
-        console.error("erro deleteRelease:", error.message);
-      },
-    });
+  const deleteReleaseMutation = useMutation({
+    mutationFn: (id: string) => deleteRelease(id, token),
+    onSuccess: (res) => {
+      setGoal(res.goal);
+      queryClient.invalidateQueries({ queryKey: ["metas"] });
+    },
+    onError: (error: Error) => {
+      console.error("erro deleteRelease:", error.message);
+    },
+  });
 
-  const { mutate: handleDeleteUser } = useMutation({
+  const deleteUserMutation = useMutation({
     mutationFn: (id: string) => deleteUser(id, token),
     onError: (error: Error) => console.error("erro deleteUser:", error.message),
   });
 
-  const handleSelectRelease = (metaSelecionada: MetaCard) => {
+  const handleSelectGoal = (metaSelecionada: MetaCard) => {
     setGoal(metaSelecionada);
   };
 
@@ -94,19 +89,19 @@ export function useMeta(initialGoals: MetaCard[] = []) {
   return {
     goal,
     releases: goal?.lancamentos || [],
-    metaCard: MetaCard ?? [],
+    metaCard: metaCard ?? [],
     loading: {
-      goal: loadingGoals || loadingCreateGoal,
-      releases: loadingAddRelease || loadingDeleteRelease,
+      goal: loadingGoals || createGoalMutation.isPending,
+      releases: addReleaseMutation.isPending || deleteReleaseMutation.isPending,
     },
-    handleCreateGoal,
-    handleAddRelease,
-    handleDeleteRelease,
+    handleCreateGoal: createGoalMutation.mutate,
+    handleAddRelease: addReleaseMutation.mutate,
+    handleDeleteRelease: deleteReleaseMutation.mutate,
     reset,
-    handleSelectRelease,
-    handleDeleteGoal,
+    handleSelectGoal,
+    handleDeleteGoal: deleteGoalMutation.mutate,
     handleGetUserGoal: () =>
       queryClient.invalidateQueries({ queryKey: ["metas"] }),
-    handleDeleteUser,
+    handleDeleteUser: deleteUserMutation.mutate,
   };
 }

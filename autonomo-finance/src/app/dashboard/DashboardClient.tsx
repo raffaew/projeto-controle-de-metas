@@ -25,7 +25,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
   const {
     goal,
     metaCard,
-    handleSelectRelease,
+    handleSelectGoal,
     releases,
     handleCreateGoal,
     handleAddRelease,
@@ -52,7 +52,7 @@ export function DashboardClient({ metasIniciais }: DashboardClientProps) {
                   metas={metaCard}
                   loading={loading.goal}
                   onViewGoal={(metaSelecionada) => {
-                    handleSelectRelease(metaSelecionada);
+                    handleSelectGoal(metaSelecionada);
                     setSelected("dashboard");
                   }}
                   onDeleteGoal={handleDeleteGoal}
