@@ -1,4 +1,4 @@
-> Controle financeiro para trabalhadores autônomos.
+> Controle financeiro para trabalhadores autônomos
 
 🔗 **[Ver projeto em produção](https://projeto-controle-de-metas.vercel.app)**
 
