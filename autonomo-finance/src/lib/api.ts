@@ -103,7 +103,6 @@ export async function deleteRelease(lancamentoId: string, token: string): Promis
 
   return res.json();
 }
-
 export async function getDashboard(metaId: string, token: string): Promise<MetaCard[]> {
   const res = await fetch(`${apiURL}/dashboard/${metaId}`, {
     headers: {
@@ -113,3 +112,5 @@ export async function getDashboard(metaId: string, token: string): Promise<MetaC
   if (!res.ok) throw new Error("Erro ao buscar metas");
   return res.json();
 }
+
+
