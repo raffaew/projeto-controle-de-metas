@@ -11,9 +11,9 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 
     const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string};
 
-    req.user = decoded;
+    req.userId = decoded.userId
 
     return next();
 

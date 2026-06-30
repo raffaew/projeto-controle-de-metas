@@ -3,6 +3,7 @@ import { UserController } from "../controllers/userController";
 import { GoalController } from "../controllers/goalController";
 import { ReleasesController } from "../controllers/releasesController";
 import { authMiddleware } from "../middleware/authMiddleware";
+import {goalOwnerMiddleware} from "../middleware/goalOwnerMiddleware"
 
 
 const router = Router();
@@ -19,11 +20,11 @@ router.get("/users", authMiddleware, userController.getAllUsers);
 
 router.get("/user/metas", authMiddleware, goalController.getUserGoals);
 
-router.post("/meta", authMiddleware, goalController.createGoal);
+router.post("/meta", authMiddleware, goalOwnerMiddleware, goalController.createGoal);
 
-router.get("/meta/:metaId", authMiddleware, goalController.getGoalById);
+router.get("/meta/:metaId", authMiddleware, goalOwnerMiddleware, goalController.getGoalById);
 
-router.delete("/meta/:metaId", authMiddleware, goalController.deleteGoal);
+router.delete("/meta/:metaId", authMiddleware, goalOwnerMiddleware, goalController.deleteGoal);
 
 router.post("/meta/:metaId/lancamento", authMiddleware, releasesController.addReleaseToGoal);
 

@@ -7,7 +7,7 @@ const goalService = new GoalService();
 export class GoalController {
   async createGoal(req: Request, res: Response) {
     try {
-      const { userId } = req.user as JwtPayload;
+      const  userId  = req.userId;
       const goal = await goalService.createGoal({...req.body, userId});
       return res.status(201).json(goal);
     } catch (error) {
@@ -18,8 +18,8 @@ export class GoalController {
 
   async getUserGoals(req: Request, res: Response) {
     try {
-      const { userId } = req.user as JwtPayload;
-      const metas = await goalService.getUserGoals(userId);
+      const  userId  = req.userId;
+      const metas = await goalService.getUserGoals(userId as string);
       return res.status(200).json(metas);
     } catch (error) {
       console.error('erro createGoal:', error)
