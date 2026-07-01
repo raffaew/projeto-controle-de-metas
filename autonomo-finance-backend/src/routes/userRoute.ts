@@ -1,9 +1,12 @@
 import { Router } from "express";
+
 import { UserController } from "../controllers/userController";
 import { GoalController } from "../controllers/goalController";
 import { ReleasesController } from "../controllers/releasesController";
+
 import { authMiddleware } from "../middleware/authMiddleware";
 import {goalOwnerMiddleware} from "../middleware/goalOwnerMiddleware"
+import { adminMiddleware } from "../middleware/adminMiddleware";
 
 
 const router = Router();
@@ -16,7 +19,7 @@ router.post("/user", userController.addUser);
 
 router.delete("/user/:userId", authMiddleware, userController.deleteUser);
 
-router.get("/users", authMiddleware, userController.getAllUsers);
+router.get("/users", authMiddleware, adminMiddleware, userController.getAllUsers);
 
 router.get("/user/metas", authMiddleware, goalController.getUserGoals);
 
